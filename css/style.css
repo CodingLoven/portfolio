@@ -1,0 +1,260 @@
+body {
+  font-family: "Oxygen", sans-serif;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+:root {
+  --background: #DBDBDB;
+  --cta: #02000D;
+}
+
+/* main section starts here  */
+
+section {
+  background: var(--background);
+  overflow: hidden;
+  width: auto;
+  height: 100%;
+  padding: 40px 120px;
+  margin: 0;
+  /* filter: blur(1px); */
+}
+
+.container1 {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.hero-content {
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+.container1 img {
+  width: 100%;
+  height: 100%;
+  border-radius: 20px;
+  z-index: 2;
+  /* background: var(--cta); */
+  /* padding: 5px; */
+  /* box-shadow: 1px 1px 10px; */
+}
+
+.hero-content h1 {
+  font-family: "Rowdies", sans-serif;
+  font-size: 90px;
+  font-weight: lighter;
+  line-height: 1;
+  margin: 10px 0;
+}
+
+.hero-content p {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 30px 0 10px 0;
+  padding: 0 20px 0 0;
+}
+
+.hero-content span {
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 0 20px 0 0;
+}
+
+.hero-content button {
+  padding: 10px 15px;
+  background: var(--cta);
+  color: var(--background);
+  font-size: 22px;
+  margin: 20px 0;
+  border-radius: 20px;
+  box-shadow: 5px 5px 5px var(--cta);
+  cursor: pointer;
+  border: 2px solid var(--background);
+  transition: 0.5s ease;
+}
+
+.hero-content button:hover {
+  transform: translate(10px) scale(1.06);
+  transition: 0.6s ease;
+}
+
+.walaha {
+  font-size: 3000px;
+  position: absolute;
+  top: 220%;
+  left: 10%;
+  bottom: 0;
+  right: 0;
+  transform: rotate(0deg);
+  line-height: 0;
+  margin: 0;
+  padding: 0;
+  color: #d2ccccd9;
+}
+
+/* section 2 starts here */
+
+.container2 {
+  display: block;
+  text-align: center;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  height: 100%;
+}
+
+.container2 h1 {
+  z-index: 1;
+  font-size: 52px;
+  color: var(--cta);
+  position: relative;
+}
+
+.holder {
+  display: flex;
+  gap: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.holder div {
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  padding: 20px;
+  border: 2px solid var(--cta);
+  border-radius: 25px;
+  box-shadow: 1px 1px 10px var(--cta);
+  color: var(--cta);
+  aspect-ratio: 2;
+  cursor: default;
+}
+
+.holder div:hover {
+  transform: scale(1.07);
+  transition: all 1s ease;
+  border: 10px solid var(--background)
+}
+
+.holder div h2 {
+  font-size: 32px;
+  margin: 10px 0;
+  padding: 0;
+  line-height: 1;
+}
+
+.holder p {
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 10px 0;
+  padding: 0 30px;
+}
+
+/*  container 3 starts here */
+
+.container3 {
+  position: relative;
+  width: auto;
+  height: 100%;
+  display: block;
+  /* background: var(--background); */
+}
+
+.front-head {
+  font-size: 52px;
+  text-align: center;
+}
+
+.skills-holder {
+  display: block;
+  width: auto;
+  height: 100%;
+}
+
+.skills-holder h1 {
+  font-size: 42px;
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.front-end {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  gap: 20px;
+  text-align: center;
+}
+
+.skill {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 30px;
+  padding: 20px;
+}
+
+.skill img {
+  width: 70%;
+  height: 100%;
+  border-radius: 500px;
+}
+
+.skill h2 {
+  font-size: 32px;
+  margin: 0;
+  padding: 10px 0;
+}
+
+.skill p {
+  padding: 10px 0px;
+  font-size: 18px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+#js {
+  width: 35%;
+  border-radius: 20px;
+}
+
+.skill2 {
+  text-align: center;
+  width: 100%;
+  height: 100%;
+  margin-top: 30px;
+  padding: 0px;
+}
+
+.skill2 img {
+  width: 50%;
+  height: 100%;
+  border-radius: 100px;
+  margin: 0;
+  background: var(--background);
+  padding: 20px;
+}
+
+.skill2 h2 {
+  font-size: 32px;
+  margin: 0;
+  padding: 10px 0;
+  line-height: 1;
+}
+
+.skill2 p {
+  padding: 0px;
+  font-size: 15px;
+  line-height: 1.5;
+  margin: 5px 0;
+}
