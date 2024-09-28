@@ -183,7 +183,7 @@ section {
 
 .skills-holder h1 {
   font-size: 42px;
-  margin: 0;
+  margin: 20px 0 0 0;
   padding: 10px 0;
   text-align: center;
 }
@@ -205,7 +205,7 @@ section {
 }
 
 .skill img {
-  width: 70%;
+  width: 50%;
   height: 100%;
   border-radius: 500px;
 }
@@ -224,7 +224,7 @@ section {
 }
 
 #js {
-  width: 35%;
+  width: 25%;
   border-radius: 20px;
 }
 
@@ -237,7 +237,7 @@ section {
 }
 
 .skill2 img {
-  width: 50%;
+  width: 40%;
   height: 100%;
   border-radius: 100px;
   margin: 0;
@@ -257,4 +257,383 @@ section {
   font-size: 15px;
   line-height: 1.5;
   margin: 5px 0;
+}
+
+/* container4 starts here */
+
+.container4 {
+  width: auto;
+  height: 100%;
+  padding: 0 60px
+}
+
+.container4 h1 {
+  text-align: center;
+  font-size: 42px;
+  margin: 50px 0;
+  padding: 0;
+  line-height: 1.2;
+}
+
+.web-dev {
+  background: var(--cta);
+  color: var(--background);
+  padding: 10px 20px;
+  height: 100%;
+  display: flex;
+  margin-top: 20px;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 30px var(--cta);
+  transform: skew(-30deg);
+  transition: all 1s ease;
+  background-image: url('../img/Python\ Objects\ and\ Classes.jpeg');
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: default;
+}
+
+.web-dev:hover {
+  transform: skew(0deg);
+  transition: all 1s ease;
+  background-image: none;
+}
+
+.material-symbols-outlined {
+  font-size: 42px;
+  margin: 0;
+  line-height: 1;
+  padding: 0;
+  color: #FFDA77
+}
+
+.web-content {
+  margin: 40px 10px;
+  padding: 10px 10px;
+  border-radius: 20px;
+  width: 70%;
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.web-content h3 {
+  font-size: 32px;
+  margin: 10px 0;
+  display: inline-flex;
+  gap: 10px;
+}
+
+.web-content p {
+  line-height: 1.5;
+  font-size: 18px;
+  margin: 0;
+  padding: 10px; 
+}
+
+.no-code {
+  background: var(--cta);
+  color: var(--background);
+  padding: 10px 20px;
+  height: 100%;
+  margin-top: 100px;
+  display: flex;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 30px var(--cta);
+  transform: skew(-30deg);
+  transition: all 1s ease;
+  background-image: url('../img/no-code.jpeg');
+  background-position:  center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: default;
+}
+
+.no-code:hover {
+  transform: skew(0deg);
+  transition: all 1s ease;
+  background-image: none;
+}
+
+.e-commerce {
+  background: var(--cta);
+  color: var(--cta);
+  padding: 10px 20px;
+  height: 100%;
+  margin-top: 100px;
+  display: flex;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 30px var(--cta);
+  transform: skew(-30deg);
+  transition: all 1s ease;
+  background-image: url('../img/e\ com.jpeg');
+  background-position:  center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  cursor: default;
+}
+
+.e-commerce:hover {
+  transform: skew(0deg);
+  transition: all 1s ease;
+  background-image: none;
+  color: var(--background);
+}
+
+.sales-funnel {
+  background: var(--cta);
+  color: var(--background);
+  padding: 10px 20px;
+  height: 100%;
+  margin-top: 100px;
+  display: flex;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 30px var(--cta);
+  transform: skew(-30deg);
+  transition: all 1s ease;
+  background-image: url('../img/sales-funnel.jpeg');
+  background-position: top;
+  background-size: contain;
+  background-repeat: repeat;
+  cursor: default;
+}
+
+.sales-funnel:hover {
+  transform: skew(0deg);
+  transition: all 1s ease;
+  background-image: none;
+}
+
+.redesign {
+  background: var(--cta);
+  color: var(--background);
+  padding: 10px 20px;
+  height: 100%;
+  margin-top: 100px;
+  display: flex;
+  border-radius: 20px;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 2px 2px 30px var(--cta);
+  transform: skew(-30deg);
+  transition: all 1s ease;
+  background-image: url('../img/web\ redesign.jpeg');
+  background-position:  center;
+  background-size: contain;
+  background-repeat: repeat;
+  cursor: default;
+}
+
+.redesign:hover {
+  transform: skew(0deg);
+  transition: all 1s ease;
+  background-image: none;
+}
+
+/* container5 starts here */
+
+.container5 {
+  width: auto;
+  height: 100%;
+  padding: 80px 0;
+}
+
+.container5 h1 {
+  text-align: center;
+  font-size: 52px;
+  margin: 0;
+  padding: 0;
+}
+
+.project-holder {
+  display: flex;
+  margin-top: 40px;
+  justify-content: space-between;
+  gap: 40px;
+  position: relative;
+}
+
+.project {
+  width: 100%;
+  height: auto;
+  color: var(--cta);
+  box-shadow: 1px 1px 10px var(--cta);
+  border-radius: 20px;
+  padding: 30px 20px;
+  cursor: default;
+  transition: all 0.7s ease-in-out;
+}
+
+.project:hover {
+  background: var(--cta);
+  color: var(--background);
+  transition: all 1s ease-in-out;
+  transform: skew(-5deg);
+  box-shadow: 1px 1px 10px var(--cta);
+}
+
+.project-img {
+  width: auto;
+  height: auto;
+  background: var(--background);
+  padding: 0;
+  border-radius: 10px;
+}
+
+.project-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 5px;
+  box-shadow: 1px 1px 10px var(--cta);
+  /* transform: scaleY(1.2); */
+}
+
+.project h4 {
+  font-size: 32px;
+  margin: 15px 0;
+  padding: 10px 0;
+  line-height: 1;
+}
+
+.project p {
+  font-size: 16px;
+  text-align: justify;
+  padding: 10px 0;
+  margin: 0 0 20px 0;
+  line-height: 1.5;
+}
+
+.project span {
+  font-size: 14px;
+  margin: 10px 0;
+  background: var(--cta);
+  color: var(--background);
+  padding: 10px 10px;
+  border-radius: 20px;
+  font-weight: bold;
+  width: 100%;
+  text-align: center;
+}
+
+.project a {
+  color: var(--cta);
+  text-decoration: none;
+  align-items: center;
+  width: auto;
+  height: 100%;
+  position: relative;
+  margin-left: 80%;
+  gap: 10px;
+  visibility: hidden;
+  transition: all 0.7s ease;
+}
+
+.project:hover a svg{
+  height: auto;
+  width: 12%;
+  color: var(--cta);
+  margin-top: 60px;
+  align-items: center;
+  border-radius: 50px;
+  background: var(--background);
+  transition:  all 0.7s ease;
+  transition-delay: 0.8s;
+}
+
+.project:hover a {
+  visibility: visible;
+}
+
+.project a svg {
+  width: 10%;
+  height: auto;
+  padding: 10px;
+  border-radius: 50px;
+  transition: all 0.7s ease;
+}
+
+/* container6 starts here */
+
+.container6 {
+  display: block;
+  width: auto;
+  height: 100%;
+  padding: 20px 0;
+}
+
+.contact-container {
+  display: flex;
+  width: auto;
+  height: auto;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px; 
+  /* padding: 40px; */
+}
+
+.container6 h1 {
+  font-size: 42px;
+  margin: 0;
+  padding: 10px 0;
+  text-align: center;
+}
+
+.contact {
+  background: var(--background);
+  color: var(--cta);
+  width: auto;
+  height: auto;
+  padding: 20px 0;
+  margin: 20px 0;
+  border-radius: 20px;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  box-shadow: 1px 1px 10px var(--cta);
+  cursor: default;
+}
+
+.icon-div {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+.icon-div img {
+  width: 10%;
+  height: auto;
+}
+
+.contact-container div h2 {
+  font-size: 28px;
+  margin: 0;
+  padding: 0;
+}
+
+.contact a {
+  text-decoration: none;
+  color: var(--cta);
+  text-align: center;
+  font-size: 14px;
+  margin: 0;
+  padding: 5px 0;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}
+
+.foot p {
+  text-align: center;
+  margin: 100px 0 0 0;
+  font-size: 12px;
+  color: var(--cta);
 }
