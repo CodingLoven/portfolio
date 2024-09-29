@@ -769,25 +769,42 @@ section {
   margin: 15px 0;
   font-size: 18px;
   display: block;
+  transition: all 1s ease;
 }
 
-.faq-holder {
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-}
-
-#drop-toggle {
+.faq-toggle {
   display: none;
   position: absolute;
 }
 
-.drop-icon {
-  display: block;
-  width: auto;
+.drop-icon{
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 1s ease;
+} 
+
+.faq-answer{
+  display: none;
+  font-size: 20px;
+  margin: 20px 0;
+  transition: all 0.5s ease;
 }
 
-.faq-questions ul li svg {
+.faq-toggle:checked~ .drop-icon ~.faq-answer {
+  display: block;
+  transition: all 2s ease;
+}
+
+.faq-toggle:checked~ .drop-icon svg {
+  transform: rotate(180deg);
+  transition: all 0.5s ease
+}
+
+.drop-icon svg {
   width: 5%;
   height: auto;
+  transition: all 0.5s ease;
 }
