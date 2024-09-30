@@ -22,7 +22,7 @@
     <nav>
 
       <div class="brand-div">
-        <a href="">
+        <a href="index.html">
           <img src="img/my logo.png" alt="">
         </a>
       </div>
@@ -31,31 +31,31 @@
         <ul class="main-lists">
         
           <li>
-            <a href="#">
+            <a href="index.html">
               Home
             </a>
           </li>
         
           <li>
-            <a href="#">
+            <a href="#about-section">
               About
             </a>
           </li>
         
           <li>
-            <a href="#">
+            <a href="#skill-section">
               Skills
             </a>
           </li>
         
           <li>
-            <a href="#">
+            <a href="#project-section">
               Projects
             </a>
           </li>
         
           <li>
-            <a href="#">
+            <a href="#contact-section">
               Contact
             </a>
           </li>
@@ -88,7 +88,7 @@
             A Creative Web Developer | Webflow Designer | Website Solution-oriented strategist
           </p>
           <span>Crafting innovative web experiences that bring ideas to life. Let's create something amazing together.</span> <br>
-          <button>
+          <button onclick="location.href='#contact-section'">
             Get In Touch
           </button>
         </div>
@@ -97,7 +97,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="about-section">
       <div class="container2">
         <h1>
           About Me
@@ -126,7 +126,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="skill-section">
       <div class="container3">
 
         <h1 class="front-head">What I Bring to the Table</h1>
@@ -144,7 +144,7 @@
                 HTML5 & CSS3
               </h2>
               <p>
-                I craft well-structured, semantically meaningful markup. Whether it’s building accessible websites from scratch or fine-tuning pixel-perfect styles, I ensure a seamless user experience across all devices. From fluid layouts to modern CSS animations, my code is clean, efficient, and always responsive.
+                I craft well-structured, semantically meaningful markup. Whether it's building accessible websites from scratch or fine-tuning pixel-perfect styles, I ensure a seamless user experience across all devices. From fluid layouts to modern CSS animations, my code is clean, efficient, and always responsive.
               </p>
             </div>
 
@@ -165,47 +165,55 @@
           </h1>
 
           <div class="front-end">
+
+            <div class="flexible">
+              <div class="">
+                <img src="img/webflow.png" alt="">
+                <h2>
+                  Webflow
+                </h2>
+                <p>
+                  I seamlessly bridge design and development, transforming complex visual concepts into fully responsive,
+                  high-performance
+                  websites.
+                </p>
+              </div>
+              
+              <div class="">
+                <img src="img/systeme.png" alt="">
+                <h2>
+                  Systeme.io
+                </h2>
+                <p>
+                  I design and optimize funnels tailored to business needs, ensuring a streamlined experience that converts visitors
+                  into customers with minimal friction.
+                </p>
+              </div>
+            </div>
             
-            <div class="skill2">
-              <img src="img/webflow.png" alt="">
-              <h2>
-                Webflow
-              </h2>
-              <p>
-                I seamlessly bridge design and development, transforming complex visual concepts into fully responsive, high-performance
-                websites.
-              </p>
-            </div>
-
-            <div class="skill2">
-              <img src="img/systeme.png" alt="">
-              <h2>
-                Systeme.io
-              </h2>
-              <p>
-                I design and optimize funnels tailored to business needs, ensuring a streamlined experience that converts visitors into customers with minimal friction.
-              </p>
-            </div>
-
-            <div class="skill2">
-              <img src="img/shopify.png" alt="">
-              <h2>
-                Shopify
-              </h2>
-              <p>
-                I develop fully functional online stores that not only look great but offer smooth shopping experiences, from product
-                listings to checkout.
-              </p>
-            </div>
-
-            <div class="skill2">
-              <img src="img/wix.png" alt="">
-              <h2>
-                Wix
-              </h2>
-              <p>
-                I utilize its intuitive drag-and-drop editor to craft stunning, fully responsive sites that require no technical expertise to manage.
-              </p>
+            <div class="block">
+              <div class="">
+                <img src="img/shopify.png" alt="">
+                <h2>
+                  Shopify
+                </h2>
+                <p>
+                  I develop fully functional online stores that not only look great but offer smooth shopping experiences, from
+                  product
+                  listings to checkout.
+                </p>
+              </div>
+              
+              <div class="">
+                <img src="img/wix.png" alt="">
+                <h2>
+                  Wix
+                </h2>
+                <p>
+                  I utilize its intuitive drag-and-drop editor to craft stunning, fully responsive sites that require no technical
+                  expertise to manage.
+                </p>
+              </div>
             </div>
 
           </div>
@@ -216,7 +224,7 @@
 
           <div class="front-end">
 
-            <div class="skill2">
+            <div class="skill3">
               <img src="img/github-removebg-preview.png" alt="">
               <h2>
                 Git & GitHub
@@ -226,7 +234,7 @@
               </p>
             </div>
 
-            <div class="skill2">
+            <div class="skill3">
               <img src="img/Vercel_Logo-removebg-preview.png" alt="">
               <h2>
                 Vercel
@@ -334,7 +342,7 @@
       </div>
     </section>
 
-    <section>
+    <section id="project-section">
       <div class="container5">
         <h1>
           Successful Projects
@@ -504,7 +512,7 @@
               <input type="checkbox" name="dropdown" id="faq1" class="faq-toggle">
 
               <label for="faq1" class="drop-icon"> 
-                What services do you offer in web development and design?
+                Do you Offer any other special services different from Web Design/Development?
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                   class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
@@ -513,13 +521,32 @@
 
               <div class="faq-answer">
                 <p>
-                  This is the answer to the first faq
+                  Yes, I offer other professional services like Resume/Cv Writing & Revamping, High-Converting Facebook Ads Setup. Feel free to reach out if you have a project in these areas. I'd be happy to assist!
                 </p>
               </div>
 
             </li>
 
-            <li>
+            <li>   
+              <input type="checkbox" name="dropdown" id="faq7" class="faq-toggle">
+
+              <label for="faq7" class="drop-icon"> 
+                How do you approach custom web development projects?
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                  class="size-6">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                </svg>
+              </label>
+
+              <div class="faq-answer">
+                <p>
+                  I focus on understanding your specific needs, then craft a tailored solution, and delivering responsive high-performing websites that align with your goals and brand vision.
+                </p>
+              </div>
+
+            </li>
+
+            <!-- <li>
               <input type="checkbox" name="dropdown" id="faq2" class="faq-toggle">
               
               <label for="faq2" class="drop-icon">
@@ -532,16 +559,16 @@
 
               <div class="faq-answer">
                 <p>
-                  This is the answer to the first faq
+                  The time frame for completing a website depends on its complexity and requirements. Simpler projects can be done within a few weeks, while more complex ones may take longer. I work with clear timelines to ensure efficiency and keep the process smooth, delivering quality work within the agreed-upon schedule.
                 </p>
               </div>
-            </li>
+            </li> -->
 
             <li>
               <input type="checkbox" name="dropdown" id="faq3" class="faq-toggle">
               
               <label for="faq3" class="drop-icon">
-                Can you work with platforms like Webflow, Wix, or Shopify for site development?
+                Do you also have experience with CMS platforms like WordPress, HubSpot and others?
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                   class="size-6">
                   <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
@@ -550,7 +577,7 @@
               
               <div class="faq-answer">
                 <p>
-                  This is the answer to the first faq
+                  My proficiency in HTML, CSS, and JavaScript enhances my design sensibility, enabling me to navigate various content management systems effectively. This skill set allows me to create outstanding, responsive websites tailored for diverse industries, ensuring an exceptional user experience while meeting specific business needs.
                 </p>
               </div>
             </li>
@@ -568,7 +595,7 @@
               
               <div class="faq-answer">
                 <p>
-                  This is the answer to the first faq
+                  I focus on keyword research, optimizing meta tags, and creating quality content. I ensure responsive design for mobile users by implementing flexible layouts and fast loading times.
                 </p>
               </div>
             </li>
@@ -588,12 +615,12 @@
             
             <div class="faq-answer">
               <p>
-                This is the answer to the first faq
+                Yes, I offer Back to Back support and maintenance to ensure your site remains updated and functional.
               </p>
             </div>
             </li>
 
-            <li>
+            <!-- <li>
               <input type="checkbox" name="dropdown" id="faq6" class="faq-toggle">
               
               <label for="faq6" class="drop-icon">
@@ -606,18 +633,18 @@
               
               <div class="faq-answer">
                 <p>
-                  This is the answer to the first faq
+                  I begin by analyzing the current site's performance, gathering client feedback, and then implementing a new design that improves functionality, user experience, and aesthetics.
                 </p>
               </div>
 
-            </li>
+            </li> -->
 
           </ul>
         </div>
       </div>
     </section>
 
-    <section class="foot">
+    <section class="foot" id="contact-section">
       <div class="container6">
         <h1>
           Reach Out To Me On
@@ -654,7 +681,7 @@
             <a href="mailto:abiolaisrael844@gmail.com">abiolaisrael844@gmail.com</a>
           </div>
           
-          <div class="contact">
+          <div class="contact" id="active">
             <div class="icon-div">
               <img src="img/whatsapp.png" alt="">
             </div>
@@ -662,6 +689,7 @@
               Whatsapp
             </h2>
             <a href="https://wa.me/+2348165793750?text= Hello%20Abiola!%20I%20am%20texting%20you%20from%20your%20portfolio%20and%20I%20have%20a%20project%20for%20you.%20My%20Name%20Is____________."  target="_blank">Loven</a>
+            <p>Very Fast response rate on Whatsapp</p>
           </div>
         </div>
 
