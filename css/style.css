@@ -3516,7 +3516,7 @@
 
   .material-symbols-outlined {
     font-size: 25px;
-    margin: 3px 0 0 0;
+    margin: 1px 0 0 0;
     line-height: 1;
     padding: 0;
     color: #FFDA77;
@@ -3532,7 +3532,7 @@
   }
 
   .web-content h3 {
-    font-size: 20px;
+    font-size: 18px;
     margin: 10px 0;
     display: inline-flex;
     gap: 5px;
