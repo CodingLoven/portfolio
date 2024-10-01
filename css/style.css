@@ -768,7 +768,7 @@
     height: auto;
     justify-content: space-around;
     align-items: center;
-    gap: 40px; 
+    gap: 0px; 
     /* padding: 40px; */
   }
 
@@ -778,6 +778,15 @@
     padding: 10px 0;
     text-align: center;
   }
+
+    .c-flex {
+      display: flex;
+      flex-direction: row;
+      width: auto;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 0 20px;
+    }
 
   .contact {
     background: var(--background);
@@ -847,7 +856,7 @@
 
   .icon-div {
     width: 100%;
-    height: 100%;
+    height: auto;
     margin: 0;
   }
 
@@ -1741,7 +1750,9 @@
   /* container6 starts here */
 
   .container6 {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
     width: auto;
     height: 100%;
     padding: 40px 80px;
@@ -1753,7 +1764,7 @@
     height: auto;
     justify-content: space-around;
     align-items: center;
-    gap: 20px; 
+    gap: 30px; 
     /* padding: 40px; */
   }
 
@@ -1764,13 +1775,22 @@
     text-align: center;
   }
 
+   .c-flex {
+    display: flex;
+    flex-direction: column;
+    width: auto;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 20px;
+  }
+
   .contact {
     background: var(--background);
     color: var(--cta);
     width: auto;
     height: auto;
     padding: 20px 0;
-    margin: 20px 0;
+    margin: 5px 0;
     border-radius: 20px;
     border: 2px solid var(--background);
     justify-content: center;
@@ -1816,18 +1836,16 @@
   }
 
   #active p {
-    font-size: 11px;
+    font-size: 14px;
     margin: 0;
-    padding: 0;
     position: absolute;
-    margin-left: 10px;
+    left: 200px;
     display: none;
-    opacity: 0;
+    padding: 0 20px;
   }
 
   #active:hover p {
     display: none;
-    opacity: 1;
   }
 
   .icon-div {
@@ -1851,7 +1869,7 @@
     text-decoration: none;
     color: var(--cta);
     text-align: center;
-    font-size: 13px;
+    font-size: 18px;
     margin: 0;
     padding: 5px 0;
   }
@@ -2762,7 +2780,7 @@
     gap: 30px;
     width: auto;
     height: 100%;
-    padding: 40px 80px;
+    padding: 40px 40px;
   }
 
   .contact-container {
@@ -2770,9 +2788,9 @@
     flex-direction: column;
     width: auto;
     height: auto;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
-    gap: 20px; 
+    gap: 30px; 
     /* padding: 40px; */
   }
 
@@ -2783,13 +2801,21 @@
     text-align: center;
   }
 
+  .c-flex {
+    display: flex;
+    width: auto;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 0 20px;
+  }
+
   .contact {
     background: var(--background);
     color: var(--cta);
     width: auto;
     height: auto;
     padding: 20px 0;
-    margin: 20px 0;
+    margin: 0px 0;
     border-radius: 20px;
     border: 2px solid var(--background);
     justify-content: center;
@@ -2835,21 +2861,23 @@
   }
 
   #active p {
-    font-size: 15px;
+    font-size: 12px;
     margin: 0;
     padding: 0;
     position: absolute;
-    margin-left: 130px;
+    left: 140px;
+    padding: 0 20px;
+    text-align: center;
     display: none;
   }
 
   #active:hover p {
-    display: block;
+    display: none;
   }
 
   .icon-div {
     width: 100%;
-    height: 100%;
+    height: auto;
     margin: 0;
   }
 
@@ -2868,7 +2896,7 @@
     text-decoration: none;
     color: var(--cta);
     text-align: center;
-    font-size: 15px;
+    font-size: 16px;
     margin: 0;
     padding: 5px 0;
   }
@@ -3780,10 +3808,10 @@
   .container6 {
     display: flex;
     flex-direction: column;
-    gap: 30px;
+    gap: 20px;
     width: auto;
     height: 100%;
-    padding: 40px 80px;
+    padding: 40px 20px;
   }
 
   .contact-container {
@@ -3791,7 +3819,7 @@
     flex-direction: column;
     width: auto;
     height: auto;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     gap: 20px; 
     /* padding: 40px; */
@@ -3804,11 +3832,19 @@
     text-align: center;
   }
 
+  .c-flex {
+    display: flex;
+    width: auto;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 0 20px;
+  }
+
   .contact {
     background: var(--background);
     color: var(--cta);
-    width: auto;
-    height: auto;
+    width: 100%;
+    height: 100%;
     padding: 20px 0;
     margin: 0px 0;
     border-radius: 20px;
@@ -3877,7 +3913,7 @@
   }
 
   .icon-div img {
-    width: 15%;
+    width: 12%;
     height: auto;
   }
 
@@ -3891,7 +3927,7 @@
     text-decoration: none;
     color: var(--cta);
     text-align: center;
-    font-size: 15px;
+    font-size: 13px;
     margin: 0;
     padding: 5px 0;
   }
@@ -3905,7 +3941,7 @@
     margin: 20px 0 0 0;
     font-size: 12px;
     padding: 50px 0;
-    color: var(--cta);
+    color: var(--cta);   
   }
 
   /* container7 starts here */
