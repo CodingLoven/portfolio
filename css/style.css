@@ -3859,8 +3859,10 @@
     margin: 0;
     padding: 0;
     position: absolute;
-    margin-left: 70px;
+    left: 0px;
+    text-align: center;
     display: none;
+    width: 100%;
   }
 
   #active:hover p {
