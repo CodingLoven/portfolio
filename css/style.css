@@ -3527,7 +3527,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 2px 2px 30px var(--cta);
-    transform: skew(-15deg);
+    transform: skew(-20deg);
     transition: all 1s ease;
     background-image: url('../img/Python\ Objects\ and\ Classes.jpeg');
     background-position: center;
@@ -3584,7 +3584,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 2px 2px 30px var(--cta);
-    transform: skew(-15deg);
+    transform: skew(-20deg);
     transition: all 1s ease;
     background-image: url('../img/no-code.jpeg');
     background-position:  center;
@@ -3610,7 +3610,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 2px 2px 30px var(--cta);
-    transform: skew(-15deg);
+    transform: skew(-20deg);
     transition: all 1s ease;
     background-image: url('../img/e\ com.jpeg');
     background-position:  center;
@@ -3637,7 +3637,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 2px 2px 30px var(--cta);
-    transform: skew(-15deg);
+    transform: skew(-20deg);
     transition: all 1s ease;
     background-image: url('../img/sales-funnel.jpeg');
     background-position: top;
@@ -3663,7 +3663,7 @@
     align-items: center;
     justify-content: center;
     box-shadow: 2px 2px 30px var(--cta);
-    transform: skew(-15deg);
+    transform: skew(-20deg);
     transition: all 1s ease;
     background-image: url('../img/web\ redesign.jpeg');
     background-position:  center;
@@ -3676,6 +3676,10 @@
     transform: skew(0deg);
     transition: all 1s ease;
     background-image: none;
+  }
+
+  #cut {
+    display: none;
   }
 
   /* container5 starts here */
