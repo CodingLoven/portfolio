@@ -3895,20 +3895,20 @@
     }
   }
 
-  #active p {
+  /* #active p {
     font-size: 10px;
     margin: 0;
-    padding: 0;
+    padding: 0 40px;
     position: absolute;
-    left: 0px;
+    left: 200px;
     text-align: center;
     display: none;
     width: 100%;
-  }
+  } */
 
-  #active:hover p {
+  /* #active:hover p {
     display: block;
-  }
+  } */
 
   .icon-div {
     width: 100%;
