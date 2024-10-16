@@ -689,6 +689,11 @@
     /* transform: scaleY(1.2); */
   }
 
+  #drop-small {
+    background: transparent;
+    color: var(--background);
+  }
+
   .project h4 {
     font-size: 32px;
     margin: 15px 0;
@@ -709,7 +714,7 @@
     margin: 10px 0;
     background: var(--cta);
     color: var(--background);
-    padding: 10px 10px;
+    padding: 6px 10px;
     border-radius: 20px;
     font-weight: bold;
     width: 100%;
@@ -1698,12 +1703,17 @@
     line-height: 1.5;
   }
 
+  #drop-small {
+    background: transparent;
+    color: var(--background);
+  }
+
   .project span {
     font-size: 14px;
     margin: 10px 0;
     background: var(--cta);
     color: var(--background);
-    padding: 10px 10px;
+    padding: 7px 10px;
     border-radius: 20px;
     font-weight: bold;
     width: 100%;
@@ -2723,12 +2733,17 @@
     line-height: 1.5;
   }
 
+  #drop-small {
+    background: transparent;
+    color: var(--background);
+  }
+
   .project span {
     font-size: 14px;
     margin: 10px 0;
     background: var(--cta);
     color: var(--background);
-    padding: 10px 15px;
+    padding: 7px 15px;
     border-radius: 20px;
     font-weight: bold;
     width: 100%;
@@ -3758,12 +3773,17 @@
     line-height: 1.5;
   }
 
+  #drop-small {
+    background: transparent;
+    color: var(--background);
+  }
+
   .project span {
     font-size: 14px;
     margin: 10px 0;
     background: var(--cta);
     color: var(--background);
-    padding: 10px 15px;
+    padding: 7px 15px;
     border-radius: 20px;
     font-weight: bold;
     width: 100%;
