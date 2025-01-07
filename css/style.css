@@ -1239,7 +1239,7 @@
   }
 
   .holder div:hover {
-    transform: scale(1.07);
+    transform: none;
     transition: all 1s ease;
     border: 2px solid var(--background)
   }
@@ -1266,7 +1266,6 @@
     height: 100%;
     padding: 40px 80px;
     display: block;
-    /* background: var(--background); */
   }
 
   .front-head {
@@ -1626,7 +1625,7 @@
 
   .container5 h1 {
     text-align: center;
-    font-size: 52px;
+    font-size: 48px;
     margin: 20px 0;
     padding: 0;
   }
@@ -2290,7 +2289,7 @@
   }
 
   .holder div:hover {
-    transform: scale(1.07);
+    transform: none;
     transition: all 1s ease;
     border: 2px solid var(--background);
     box-shadow: none;
@@ -2681,7 +2680,7 @@
 
   .container5 h1 {
     text-align: center;
-    font-size: 52px;
+    font-size: 38px;
     margin: 20px 0;
     padding: 0;
   }
@@ -3359,7 +3358,7 @@
   }
 
   .holder div:hover {
-    transform: scale(1.07);
+    transform: none;
     transition: all 1s ease;
     border: 2px solid var(--background);
     box-shadow: none;
@@ -3850,7 +3849,7 @@
  }
 
  .project a {
-    /* opacity: 0; */
+    opacity: 0;
  }
 
  .project:hover .cal{
@@ -3873,7 +3872,7 @@
  }
 
  .cal h4 {
-    font-size: 18px;
+    font-size: 16px;
     color: var(--background);
     text-align: center;
     margin-left: -100%;
