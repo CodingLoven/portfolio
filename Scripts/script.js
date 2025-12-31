@@ -124,12 +124,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let startX = 0;
     let startY = 0;
 
-    stack.addEventListener("touchstart", (e) => {
+    const onTouchStart = (e) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
-    }, { passive: true });
+    };
 
-    stack.addEventListener("touchend", (e) => {
+    const onTouchEnd = (e) => {
       const endX = e.changedTouches[0].clientX;
       const endY = e.changedTouches[0].clientY;
 
@@ -139,7 +139,12 @@ document.addEventListener("DOMContentLoaded", () => {
       if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
         nextVideo();
       }
-    }, { passive: true });
+    };
+
+    cards.forEach(card => {
+      card.addEventListener("touchstart", onTouchStart, { passive: true });
+      card.addEventListener("touchend", onTouchEnd, { passive: true });
+    });
   }
 
   /*   MOBILE MENU TOGGLE  */
