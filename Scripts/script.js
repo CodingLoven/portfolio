@@ -121,30 +121,29 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     /* Swipe support */
-    let startX = 0;
-    let startY = 0;
+    const swipeLayer = document.querySelector(".video-swipe-layer");
 
-    const onTouchStart = (e) => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    };
+    if (swipeLayer) {
+      let startX = 0;
+      let startY = 0;
 
-    const onTouchEnd = (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const endY = e.changedTouches[0].clientY;
+      swipeLayer.addEventListener("touchstart", (e) => {
+        startX = e.touches[0].clientX;
+        startY = e.touches[0].clientY;
+      }, { passive: true });
 
-      const deltaX = startX - endX;
-      const deltaY = startY - endY;
+      swipeLayer.addEventListener("touchend", (e) => {
+        const endX = e.changedTouches[0].clientX;
+        const endY = e.changedTouches[0].clientY;
 
-      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
-        nextVideo();
-      }
-    };
+        const deltaX = startX - endX;
+        const deltaY = startY - endY;
 
-    cards.forEach(card => {
-      card.addEventListener("touchstart", onTouchStart, { passive: true });
-      card.addEventListener("touchend", onTouchEnd, { passive: true });
-    });
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+          nextVideo();
+        }
+      }, { passive: true });
+    }
   }
 
   /*   MOBILE MENU TOGGLE  */
