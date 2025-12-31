@@ -120,65 +120,40 @@ document.addEventListener("DOMContentLoaded", () => {
       nextBtn.addEventListener("click", nextVideo);
     }
 
+    
+
+
     /* Swipe support */
-    const swipeLayer = document.querySelector(".video-swipe-layer");
+        /* Swipe support (works over video, keeps clicks) */
+    let startX = 0;
+    let startY = 0;
 
-    if (swipeLayer) {
-      let startX = 0;
-      let startY = 0;
-      let moved = false;
+    const onPointerDown = (e) => {
+      if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
+      startX = e.clientX;
+      startY = e.clientY;
+    };
 
-      swipeLayer.addEventListener("touchstart", (e) => {
-        startX = e.touches[0].clientX;
-        startY = e.touches[0].clientY;
-        moved = false;
-      }, { passive: true });
+    const onPointerUp = (e) => {
+      if (e.pointerType !== "touch" && e.pointerType !== "pen") return;
 
-      swipeLayer.addEventListener("touchmove", (e) => {
-        const moveX = e.touches[0].clientX;
-        const moveY = e.touches[0].clientY;
+      const deltaX = e.clientX - startX;
+      const deltaY = e.clientY - startY;
 
-        if (Math.abs(moveX - startX) > 10 || Math.abs(moveY - startY) > 10) {
-          moved = true;
-        }
-      }, { passive: true });
+      // swipe only (left OR right = next)
+      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        e.preventDefault();
+        e.stopPropagation();
+        nextVideo();
+      }
+    };
 
-      swipeLayer.addEventListener("touchend", (e) => {
-        const endX = e.changedTouches[0].clientX;
-        const endY = e.changedTouches[0].clientY;
+    // Capture phase = stack receives events even if the target is <video> or <iframe>
+    stack.addEventListener("pointerdown", onPointerDown, { capture: true, passive: true });
+    stack.addEventListener("pointerup", onPointerUp, { capture: true, passive: false });
 
-        const deltaX = endX - startX;
-        const deltaY = endY - startY;
 
-        /* SWIPE */
-        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
-          nextVideo();
-          return;
-        }
 
-        /* TAP (play / pause) */
-        if (!moved) {
-          const activeCard = document.querySelector(".video-card.active");
-          if (!activeCard) return;
-
-          const video = activeCard.querySelector("video");
-          if (video) {
-            video.paused ? video.play() : video.pause();
-          }
-        }
-      }, { passive: true });
-    }
-  }
-
-  /*   MOBILE MENU TOGGLE  */
-
-  const toggle = document.querySelector(".menu-toggle");
-  const mobileMenu = document.querySelector(".mobile-menu");
-
-  if (toggle && mobileMenu) {
-    toggle.addEventListener("click", () => {
-      mobileMenu.classList.toggle("active");
-    });
   }
 
   /*    HEADER SCROLL HIDE / SHOW   */

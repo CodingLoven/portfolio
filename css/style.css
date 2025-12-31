@@ -3281,14 +3281,6 @@ body {
     font-size: var(--text-base);
   }
 
-  .video-swipe-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 10;
-    background: transparent;
-    touch-action: pan-y;
-  }
-
   .video-stack {
     user-select: none;
     -webkit-user-select: none;
@@ -3300,10 +3292,7 @@ body {
     touch-action: pan-y;
   }
 
-  .video-embed iframe,
-  .video-card video {
-    pointer-events: none;
-  }
+ 
 
   /* ==============================
   RESPONSIVE (MOBILE)*/
