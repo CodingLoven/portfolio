@@ -126,21 +126,45 @@ document.addEventListener("DOMContentLoaded", () => {
     if (swipeLayer) {
       let startX = 0;
       let startY = 0;
+      let moved = false;
 
       swipeLayer.addEventListener("touchstart", (e) => {
         startX = e.touches[0].clientX;
         startY = e.touches[0].clientY;
+        moved = false;
+      }, { passive: true });
+
+      swipeLayer.addEventListener("touchmove", (e) => {
+        const moveX = e.touches[0].clientX;
+        const moveY = e.touches[0].clientY;
+
+        if (Math.abs(moveX - startX) > 10 || Math.abs(moveY - startY) > 10) {
+          moved = true;
+        }
       }, { passive: true });
 
       swipeLayer.addEventListener("touchend", (e) => {
         const endX = e.changedTouches[0].clientX;
         const endY = e.changedTouches[0].clientY;
 
-        const deltaX = startX - endX;
-        const deltaY = startY - endY;
+        const deltaX = endX - startX;
+        const deltaY = endY - startY;
 
+        /* SWIPE */
         if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
           nextVideo();
+          return;
+        }
+
+        /* TAP (play / pause) */
+        if (!moved) {
+          const activeCard = document.querySelector(".video-card.active");
+          if (!activeCard) return;
+
+          const video = activeCard.querySelector("video");
+          if (video) {
+            video.paused ? video.play() : video.pause();
+          }
         }
       }, { passive: true });
     }
