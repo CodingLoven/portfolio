@@ -3287,6 +3287,16 @@ body {
     touch-action: pan-y;
   }
 
+  .video-card,
+  .video-card * {
+    touch-action: pan-y;
+  }
+
+  .video-embed iframe,
+  .video-card video {
+    pointer-events: none;
+  }
+
   /* ==============================
   RESPONSIVE (MOBILE)*/
 
