@@ -162,19 +162,11 @@ document.addEventListener("DOMContentLoaded", () => {
   }, { passive: false });
 
   // ✅ Tap-to-play: works with <video>. If you're using iframe embeds, tell me.
-  swipeLayer.addEventListener("touchend", (e) => {
-    if (dragging) return;
-
-      const video = getActiveCard()?.querySelector("video");
-      if (!video) return;
-
-      video.dispatchEvent(new MouseEvent("click", {
-        bubbles: true,
-        cancelable: true,
-        view: window
-      }));
-    });
-  });
+  swipeLayer.addEventListener("click", () => {
+  const video = getActiveCard()?.querySelector("video");
+  if (!video) return;
+  video.paused ? video.play() : video.pause();
+});
 
 
 // header Hamburger
