@@ -3295,7 +3295,16 @@ body {
     z-index: 5;
     background: transparent;
     touch-action: pan-y;
-    pointer-events: none;
+    pointer-events: auto;
+  }
+
+  .video-card video,
+  .video-card iframe,
+  .video-card .video-embed {
+    position: relative;
+    z-index: 6;
+    /* Above swipe layer */
+    pointer-events: auto;
   }
 
 

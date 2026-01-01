@@ -53,14 +53,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const stack = document.querySelector(".video-stack");
   const cards = Array.from(document.querySelectorAll(".video-card"));
   const swipeLayer = document.querySelector(".video-swipe-layer");
-
-  const nextBtn = document.querySelector(".video-next-btn"); // your top button
-  const prevBtn = document.querySelector(".video-prev-btn"); // optional if you have it
+  const nextBtn = document.querySelector(".video-next-btn");
+  const prevBtn = document.querySelector(".video-prev-btn");
 
   if (!stack || cards.length === 0) return;
 
   let activeIndex = 0;
   const SWIPE_THRESHOLD = 60;
+  const TAP_TIME_THRESHOLD = 200; // Max time for tap (not swipe)
+  const TAP_MOVE_THRESHOLD = 10;  // Max movement for tap
 
   const updateStack = () => {
     cards.forEach((card, i) => {
@@ -69,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
       card.classList.toggle("active", pos === 0);
       card.style.zIndex = String(cards.length - pos);
       card.style.opacity = "1";
-      card.style.pointerEvents = pos === 0 ? "auto" : "none";
 
       if (pos === 0) card.style.transform = "translate(0,0) scale(1)";
       else if (pos === 1) card.style.transform = "translate(20px,-15px) scale(0.95)";
@@ -83,19 +83,19 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStack();
   };
 
-  // ✅ Desktop buttons
   if (nextBtn) nextBtn.addEventListener("click", () => navigate(1));
   if (prevBtn) prevBtn.addEventListener("click", () => navigate(-1));
 
   updateStack();
 
-  // If you don't have swipeLayer, still allow desktop to work
   if (!swipeLayer) return;
 
-  // ✅ Swipe logic (single system)
+  // ✅ MASTER SOLUTION: Detect tap vs swipe
   let startX = 0, startY = 0;
+  let startTime = 0;
   let dragging = false;
   let locked = false;
+  let moved = false;
 
   const getActiveCard = () => cards[activeIndex];
 
@@ -103,8 +103,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const t = e.touches[0];
     startX = t.clientX;
     startY = t.clientY;
+    startTime = Date.now();
     dragging = false;
     locked = false;
+    moved = false;
 
     const active = getActiveCard();
     if (active) active.style.transition = "none";
@@ -116,6 +118,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const dx = t.clientX - startX;
     const dy = t.clientY - startY;
+
+    // Mark that user moved their finger
+    if (Math.abs(dx) > TAP_MOVE_THRESHOLD || Math.abs(dy) > TAP_MOVE_THRESHOLD) {
+      moved = true;
+    }
 
     if (!locked) {
       locked = true;
@@ -140,7 +147,37 @@ document.addEventListener("DOMContentLoaded", () => {
     const active = getActiveCard();
     if (!active) return;
 
+    const endTime = Date.now();
+    const duration = endTime - startTime;
+
     active.style.transition = "transform 0.6s ease, opacity 0.6s ease";
+
+    // ✅ Detect TAP: quick touch with minimal movement
+    const isTap = duration < TAP_TIME_THRESHOLD && !moved;
+
+    if (isTap) {
+      // It's a tap - trigger video play
+      const video = active.querySelector("video");
+      const iframe = active.querySelector("iframe");
+
+      if (video) {
+        if (video.paused) {
+          video.play();
+        } else {
+          video.pause();
+        }
+      } else if (iframe) {
+        // For Vimeo/YouTube iframes - simulate click on iframe
+        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+      }
+
+      // Reset transform in case of partial drag
+      active.style.transform = "translate(0,0) scale(1)";
+      active.style.opacity = "1";
+      return;
+    }
+
+    // ✅ It's a SWIPE - handle navigation
     if (!dragging) return;
 
     const endX = e.changedTouches?.[0]?.clientX ?? startX;
@@ -160,39 +197,6 @@ document.addEventListener("DOMContentLoaded", () => {
       active.style.opacity = "1";
     }
   }, { passive: false });
-
-  // ✅ Tap-to-play: works with <video>. If you're using iframe embeds, tell me.
-  swipeLayer.addEventListener("click", () => {
-    const video = getActiveCard()?.querySelector("video");
-    if (!video) return;
-    video.paused ? video.play() : video.pause();
-  });
-
-  let isSwiping = false;
-
-  swipeLayer.addEventListener("touchstart", (e) => {
-    isSwiping = false;
-  }, { passive: true });
-
-  swipeLayer.addEventListener("touchmove", (e) => {
-    const touch = e.touches[0];
-    if (!touch) return;
-
-    const dx = Math.abs(touch.clientX - startX);
-    const dy = Math.abs(touch.clientY - startY);
-
-    // User intends to swipe horizontally
-    if (dx > dy && dx > 10) {
-      swipeLayer.style.pointerEvents = "auto";
-      isSwiping = true;
-      e.preventDefault();
-    }
-  }, { passive: false });
-
-  swipeLayer.addEventListener("touchend", () => {
-    swipeLayer.style.pointerEvents = "none";
-    isSwiping = false;
-  });
 });
 
 
