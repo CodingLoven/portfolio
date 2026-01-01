@@ -3199,20 +3199,20 @@ body {
 
  .video-card:nth-child(1) {
    z-index: 3;
-   transform: translate(0, 0) scale(1);
+   /* transform: translate(0, 0) scale(1); */
    background: #fff;
  }
 
   .video-card:nth-child(2) {
     z-index: 2;
-    transform: translate(20px, -15px) scale(0.95);
+    /* transform: translate(20px, -15px) scale(0.95); */
     background: #ac1bac;
     opacity: 1 !important;
   }
 
   .video-card:nth-child(3) {
     z-index: 1;
-    transform: translate(40px, -30px) scale(0.90);
+    /* transform: translate(40px, -30px) scale(0.90); */
     opacity: 1 !important;
   }
 
@@ -3289,8 +3289,17 @@ body {
     touch-action: pan-y;
   }
 
-  .video-card,
-  .video-card * {
+  .video-stack {
+    touch-action: pan-y;
+  }
+
+  .video-swipe-layer {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    background: transparent;
+
+    /* This is essential */
     touch-action: pan-y;
   }
 
@@ -3326,6 +3335,11 @@ body {
 
     .about-intro {
       font-size: var(--text-sm);
+    }
+
+    .video-stack:hover .video-card:not(.active) {
+      transform: none;
+      box-shadow: none;
     }
   }
 

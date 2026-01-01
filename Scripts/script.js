@@ -50,58 +50,18 @@ document.addEventListener("DOMContentLoaded", () => {
 // testimonial section js 
 
 document.addEventListener("DOMContentLoaded", () => {
-  /* ============================================
-     COUNT-UP NUMBERS ON SCROLL (UNCHANGED)
-  ============================================ */
-  const statNumbers = document.querySelectorAll(".stat-number");
-  let statsAnimated = false;
-
-  const countUp = (el) => {
-    const raw = el.dataset.value;
-    const isDecimal = raw.includes(".");
-    const target = parseFloat(raw);
-    const suffix = el.textContent.replace(/[0-9.]/g, "");
-    const duration = 800;
-    const startTime = performance.now();
-
-    const animate = (time) => {
-      const progress = Math.min((time - startTime) / duration, 1);
-      const value = target * progress;
-      el.textContent = (isDecimal ? value.toFixed(1) : Math.floor(value)) + suffix;
-      if (progress < 1) requestAnimationFrame(animate);
-    };
-
-    requestAnimationFrame(animate);
-  };
-
-  const statsObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && !statsAnimated) {
-        statsAnimated = true;
-        statNumbers.forEach(countUp);
-        statsObserver.disconnect();
-      }
-    },
-    { threshold: 0.4 }
-  );
-
-  const statsSection = document.querySelector(".about-stats");
-  if (statsSection) statsObserver.observe(statsSection);
-
-  /* ============================================
-     VIDEO STACK WITH MANUAL SWIPE
-  ============================================ */
   const stack = document.querySelector(".video-stack");
   const cards = Array.from(document.querySelectorAll(".video-card"));
-  const nextBtn = document.querySelector(".video-next-btn");
+  const swipeLayer = document.querySelector(".video-swipe-layer");
+
+  const nextBtn = document.querySelector(".video-next-btn"); // your top button
+  const prevBtn = document.querySelector(".video-prev-btn"); // optional if you have it
 
   if (!stack || cards.length === 0) return;
 
-  const SWIPE_THRESHOLD = 50;
-
   let activeIndex = 0;
+  const SWIPE_THRESHOLD = 60;
 
-  /* Update visual stack positioning */
   const updateStack = () => {
     cards.forEach((card, i) => {
       const pos = (i - activeIndex + cards.length) % cards.length;
@@ -111,214 +71,104 @@ document.addEventListener("DOMContentLoaded", () => {
       card.style.opacity = "1";
       card.style.pointerEvents = pos === 0 ? "auto" : "none";
 
-      if (pos === 0) {
-        card.style.transform = "translate(0, 0) scale(1)";
-      } else if (pos === 1) {
-        card.style.transform = "translate(20px, -15px) scale(0.95)";
-      } else if (pos === 2) {
-        card.style.transform = "translate(40px, -30px) scale(0.90)";
-      } else {
-        card.style.transform = "translate(60px, -45px) scale(0.85)";
-      }
+      if (pos === 0) card.style.transform = "translate(0,0) scale(1)";
+      else if (pos === 1) card.style.transform = "translate(20px,-15px) scale(0.95)";
+      else if (pos === 2) card.style.transform = "translate(40px,-30px) scale(0.90)";
+      else card.style.transform = "translate(60px,-45px) scale(0.85)";
     });
   };
 
-
-  /* Navigate through cards */
-  const navigate = (direction) => {
-    activeIndex = (activeIndex + direction + cards.length) % cards.length;
+  const navigate = (dir) => {
+    activeIndex = (activeIndex + dir + cards.length) % cards.length;
     updateStack();
   };
 
-  /* Button click */
-  if (nextBtn) {
-    nextBtn.addEventListener("click", () => navigate(1));
-  }
+  // ✅ Desktop buttons
+  if (nextBtn) nextBtn.addEventListener("click", () => navigate(1));
+  if (prevBtn) prevBtn.addEventListener("click", () => navigate(-1));
 
-  /* Swipe detection (bi-directional) */
-  let startX = 0;
-  let startY = 0; 
-
-  const swipeTargets = [stack];
-
-  swipeTargets.forEach(target => {
-    target.addEventListener("touchstart", (e) => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-    }, { passive: true });
-
-    target.addEventListener("touchend", (e) => {
-      const endX = e.changedTouches[0].clientX;
-      const endY = e.changedTouches[0].clientY;
-      const deltaX = startX - endX;
-      const deltaY = startY - endY;
-
-      if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
-        e.preventDefault(); 
-        navigate(deltaX > 0 ? 1 : -1);
-      }
-    }, { passive: true });
-  });
-  /* Initialize */
   updateStack();
 
-  /*    DRAG-TO-SWIPE ON VIDEO (uses swipe layer */
-  const swipeLayer = document.querySelector(".video-swipe-layer");
-  if (swipeLayer && stack && cards.length) {
-    let startX = 0;
-    let startY = 0;
-    let dragging = false;
+  // If you don't have swipeLayer, still allow desktop to work
+  if (!swipeLayer) return;
 
-    // Make sure the layer captures touches above videos/iframe
-    swipeLayer.style.position = "absolute";
-    swipeLayer.style.inset = "0";
-    swipeLayer.style.pointerEvents = "auto";
-    swipeLayer.style.background = "transparent"; // invisible shield
-    swipeLayer.style.zIndex = "10"; // above cards but not blocking visuals
+  // ✅ Swipe logic (single system)
+  let startX = 0, startY = 0;
+  let dragging = false;
+  let locked = false;
 
-    const getActiveCard = () => cards[activeIndex];
+  const getActiveCard = () => cards[activeIndex];
 
-    const onTouchStart = (e) => {
-      if (!e.touches || !e.touches[0]) return;
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      dragging = true;
+  swipeLayer.addEventListener("touchstart", (e) => {
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+    dragging = false;
+    locked = false;
 
-      const active = getActiveCard();
-      if (active) {
-        active.style.transition = "none"; // follow finger smoothly
-        active.style.willChange = "transform, opacity";
-      }
-    };
+    const active = getActiveCard();
+    if (active) active.style.transition = "none";
+  }, { passive: true });
 
-    const onTouchMove = (e) => {
-      if (!dragging) return;
-      // Prevent page scroll when horizontal swipe dominates
+  swipeLayer.addEventListener("touchmove", (e) => {
+    const t = e.touches[0];
+    if (!t) return;
+
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+
+    if (!locked) {
+      locked = true;
+      dragging = Math.abs(dx) > Math.abs(dy);
+    }
+
+    if (dragging) {
       e.preventDefault();
-
-      const touch = e.touches[0];
-      if (!touch) return;
-
-      const dx = touch.clientX - startX;
-      const dy = touch.clientY - startY;
-
-      // Only act if horizontal movement is stronger
-      if (Math.abs(dx) > Math.abs(dy)) {
-        const active = getActiveCard();
-        if (!active) return;
-
-        // Small tilt for feedback; limit rotation
-        const tilt = Math.max(-10, Math.min(10, dx * 0.06));
-        const scale = 1 - Math.min(0.05, Math.abs(dx) / 800);
-
-        active.style.transform = `translate(${dx}px, 0) rotate(${tilt}deg) scale(${scale})`;
-        active.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 600));
-      }
-    };
-
-    const onTouchEnd = (e) => {
-      if (!dragging) return;
-      dragging = false;
 
       const active = getActiveCard();
       if (!active) return;
 
-      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
-      const endY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : startY;
-      const dx = endX - startX;
-      const dy = endY - startY;
+      const tilt = Math.max(-10, Math.min(10, dx * 0.06));
+      const scale = 1 - Math.min(0.05, Math.abs(dx) / 800);
 
-      const horizontal = Math.abs(dx) > Math.abs(dy);
-      const leftSwipe = dx < -SWIPE_THRESHOLD;   // move forward
-      const rightSwipe = dx > SWIPE_THRESHOLD;   // move backward
-
-      // Restore transition for snap/animate
-      active.style.transition = "transform 0.6s var(--ease-smooth), opacity 0.6s var(--ease-smooth)";
-
-      if (horizontal && (leftSwipe || rightSwipe)) {
-        // Animate card off-screen, then navigate and reset transforms
-        const offX = leftSwipe ? -stack.clientWidth - 80 : stack.clientWidth + 80;
-        active.style.transform = `translate(${offX}px, 0) rotate(${leftSwipe ? -10 : 10}deg) scale(0.92)`;
-        active.style.opacity = "0.2";
-
-        const handle = () => {
-          active.removeEventListener("transitionend", handle);
-          navigate(leftSwipe ? 1 : -1);
-          // After navigate, updateStack sets new transforms; ensure clean state
-          cards.forEach(c => {
-            c.style.transition = "";
-            c.style.opacity = "";
-          });
-        };
-        active.addEventListener("transitionend", handle);
-      } else {
-        // Snap back if swipe wasn’t strong enough
-        active.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
-        active.style.opacity = "1";
-      }
-    };
-
-    swipeLayer.addEventListener("touchstart", onTouchStart, { passive: false });
-    swipeLayer.addEventListener("touchmove", onTouchMove, { passive: false });
-    swipeLayer.addEventListener("touchend", onTouchEnd, { passive: false });
-  }
-
-
-  /* ============================================
-     SWIPE HINT OVERLAY
-  ============================================ */
-  const showSwipeHint = () => {
-    const hint = document.createElement('div');
-    hint.className = 'swipe-hint';
-    hint.innerHTML = 'Swipe <span style="font-size: 1.3em; margin-left: 4px;">→</span>';
-    hint.style.cssText = `
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 15px;
-      font-weight: 500;
-      pointer-events: none;
-      z-index: 100;
-      animation: fadeInOut 3.5s ease-in-out;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    `;
-    
-    stack.appendChild(hint);
-    
-    setTimeout(() => hint.remove(), 3500);
-  };
-
-  // Add CSS animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-      15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      active.style.transform = `translate(${dx}px,0) rotate(${tilt}deg) scale(${scale})`;
+      active.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 600));
     }
-  `;
-  document.head.appendChild(style);
+  }, { passive: false });
 
-  // Show hint when section comes into view (once per page load)
-  let hintShown = false;
-  const hintObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && !hintShown) {
-        hintShown = true;
-        setTimeout(showSwipeHint, 600);
-        hintObserver.disconnect();
-      }
-    },
-    { threshold: 0.5 }
-  );
-  hintObserver.observe(stack);
+  swipeLayer.addEventListener("touchend", (e) => {
+    const active = getActiveCard();
+    if (!active) return;
+
+    active.style.transition = "transform 0.6s ease, opacity 0.6s ease";
+    if (!dragging) return;
+
+    const endX = e.changedTouches?.[0]?.clientX ?? startX;
+    const dx = endX - startX;
+
+    if (Math.abs(dx) > SWIPE_THRESHOLD) {
+      const off = dx < 0 ? -stack.clientWidth - 80 : stack.clientWidth + 80;
+      active.style.transform = `translate(${off}px,0) rotate(${dx < 0 ? -10 : 10}deg) scale(0.92)`;
+      active.style.opacity = "0.2";
+
+      active.addEventListener("transitionend", function done() {
+        active.removeEventListener("transitionend", done);
+        navigate(dx < 0 ? 1 : -1);
+      });
+    } else {
+      active.style.transform = "translate(0,0) scale(1)";
+      active.style.opacity = "1";
+    }
+  }, { passive: false });
+
+  // ✅ Tap-to-play: works with <video>. If you're using iframe embeds, tell me.
+  swipeLayer.addEventListener("click", () => {
+    const video = getActiveCard()?.querySelector("video");
+    if (!video) return;
+    video.paused ? video.play() : video.pause();
+  });
 });
+
 
 // header Hamburger
 
