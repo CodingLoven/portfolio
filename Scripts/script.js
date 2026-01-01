@@ -107,20 +107,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const pos = (i - activeIndex + cards.length) % cards.length;
 
       card.classList.toggle("active", pos === 0);
-      card.style.zIndex = cards.length - pos;
-      card.style.opacity = 1;
+      card.style.zIndex = String(cards.length - pos);
+      card.style.opacity = "1";
+      card.style.pointerEvents = pos === 0 ? "auto" : "none";
 
       if (pos === 0) {
-          card.style.transform = "translate(0, 0) scale(1)";
-        } else if (pos === 1) {
-          card.style.transform = "translate(20px, -15px) scale(0.95)";
-        } else if (pos === 2) {
-          card.style.transform = "translate(40px, -30px) scale(0.90)";
-        } else {
-          card.style.transform = "translate(60px, -45px) scale(0.85)";
-        }
+        card.style.transform = "translate(0, 0) scale(1)";
+      } else if (pos === 1) {
+        card.style.transform = "translate(20px, -15px) scale(0.95)";
+      } else if (pos === 2) {
+        card.style.transform = "translate(40px, -30px) scale(0.90)";
+      } else {
+        card.style.transform = "translate(60px, -45px) scale(0.85)";
+      }
     });
   };
+
 
   /* Navigate through cards */
   const navigate = (direction) => {
