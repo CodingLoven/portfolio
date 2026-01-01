@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (statsSection) statsObserver.observe(statsSection);
 
   /* ============================================
-     VIDEO STACK WITH AUTO-ROTATION
+     VIDEO STACK WITH MANUAL SWIPE
   ============================================ */
   const stack = document.querySelector(".video-stack");
   const cards = Array.from(document.querySelectorAll(".video-card"));
@@ -97,14 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!stack || cards.length === 0) return;
 
-  const AUTOPLAY_INTERVAL = 4000; // 4 seconds - slow and smooth
   const SWIPE_THRESHOLD = 50;
-  const INVIEW_THRESHOLD = 0.5;
 
   let activeIndex = 0;
-  let autoplayTimer = null;
-  let inView = false;
-  let videoPlaying = false;
 
   /* Update visual stack positioning */
   const updateStack = () => {
@@ -113,17 +108,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
       card.classList.toggle("active", pos === 0);
       card.style.zIndex = cards.length - pos;
-      card.style.opacity = pos > 2 ? 0 : 1;
+      card.style.opacity = 1;
 
       if (pos === 0) {
-        card.style.transform = "translate(0,0) scale(1)";
-      } else if (pos === 1) {
-        card.style.transform = "translate(12px,12px) scale(0.92)";
-      } else if (pos === 2) {
-        card.style.transform = "translate(24px,24px) scale(0.85)";
-      } else {
-        card.style.transform = "translate(36px,36px) scale(0.80)";
-      }
+          card.style.transform = "translate(0, 0) scale(1)";
+        } else if (pos === 1) {
+          card.style.transform = "translate(20px, -15px) scale(0.95)";
+        } else if (pos === 2) {
+          card.style.transform = "translate(40px, -30px) scale(0.90)";
+        } else {
+          card.style.transform = "translate(60px, -45px) scale(0.85)";
+        }
     });
   };
 
@@ -133,30 +128,9 @@ document.addEventListener("DOMContentLoaded", () => {
     updateStack();
   };
 
-  /* Auto-rotation control */
-  const startAutoplay = () => {
-    if (autoplayTimer || !inView || videoPlaying || cards.length <= 1) return;
-    autoplayTimer = setInterval(() => navigate(1), AUTOPLAY_INTERVAL);
-  };
-
-  const stopAutoplay = () => {
-    if (autoplayTimer) {
-      clearInterval(autoplayTimer);
-      autoplayTimer = null;
-    }
-  };
-
-  const resetAutoplay = () => {
-    stopAutoplay();
-    startAutoplay();
-  };
-
   /* Button click */
   if (nextBtn) {
-    nextBtn.addEventListener("click", () => {
-      navigate(1);
-      resetAutoplay();
-    });
+    nextBtn.addEventListener("click", () => navigate(1));
   }
 
   /* Swipe detection (bi-directional) */
@@ -166,7 +140,6 @@ document.addEventListener("DOMContentLoaded", () => {
   stack.addEventListener("touchstart", (e) => {
     startX = e.touches[0].clientX;
     startY = e.touches[0].clientY;
-    stopAutoplay();
   }, { passive: true });
 
   stack.addEventListener("touchend", (e) => {
@@ -179,87 +152,65 @@ document.addEventListener("DOMContentLoaded", () => {
     if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
       navigate(deltaX > 0 ? 1 : -1); // Swipe left = next, swipe right = previous
     }
-
-    resetAutoplay();
   }, { passive: true });
-
-  /* Video playback detection */
-  cards.forEach((card) => {
-    // Native <video> elements
-    const video = card.querySelector("video");
-    if (video) {
-      video.addEventListener("play", () => {
-        videoPlaying = true;
-        stopAutoplay();
-      });
-
-      video.addEventListener("pause", () => {
-        videoPlaying = false;
-        startAutoplay();
-      });
-
-      video.addEventListener("ended", () => {
-        videoPlaying = false;
-        startAutoplay();
-      });
-    }
-
-    // Vimeo iframe detection (more complex)
-    const iframe = card.querySelector("iframe");
-    if (iframe && iframe.src.includes("vimeo.com")) {
-      // Vimeo Player API messages
-      window.addEventListener("message", (e) => {
-        if (e.origin !== "https://player.vimeo.com") return;
-
-        try {
-          const data = JSON.parse(e.data);
-          
-          if (data.event === "play") {
-            videoPlaying = true;
-            stopAutoplay();
-          } else if (data.event === "pause" || data.event === "ended") {
-            videoPlaying = false;
-            startAutoplay();
-          }
-        } catch (err) {
-          // Ignore parse errors
-        }
-      });
-
-      // Enable Vimeo API
-      iframe.src += (iframe.src.includes("?") ? "&" : "?") + "api=1";
-    }
-  });
-
-  /* IntersectionObserver - start/stop when in view */
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        inView = entry.isIntersecting && entry.intersectionRatio >= INVIEW_THRESHOLD;
-        if (inView) {
-          startAutoplay();
-        } else {
-          stopAutoplay();
-        }
-      });
-    },
-    { threshold: INVIEW_THRESHOLD }
-  );
-
-  sectionObserver.observe(stack);
-
-  /* Pause when tab is hidden */
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      stopAutoplay();
-    } else if (inView && !videoPlaying) {
-      startAutoplay();
-    }
-  });
 
   /* Initialize */
   updateStack();
-  startAutoplay();
+
+  /* ============================================
+     SWIPE HINT OVERLAY
+  ============================================ */
+  const showSwipeHint = () => {
+    const hint = document.createElement('div');
+    hint.className = 'swipe-hint';
+    hint.innerHTML = 'Swipe <span style="font-size: 1.3em; margin-left: 4px;">→</span>';
+    hint.style.cssText = `
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 15px;
+      font-weight: 500;
+      pointer-events: none;
+      z-index: 100;
+      animation: fadeInOut 3.5s ease-in-out;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    `;
+    
+    stack.appendChild(hint);
+    
+    setTimeout(() => hint.remove(), 3500);
+  };
+
+  // Add CSS animation
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+      15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Show hint when section comes into view (once per page load)
+  let hintShown = false;
+  const hintObserver = new IntersectionObserver(
+    ([entry]) => {
+      if (entry.isIntersecting && !hintShown) {
+        hintShown = true;
+        setTimeout(showSwipeHint, 600);
+        hintObserver.disconnect();
+      }
+    },
+    { threshold: 0.5 }
+  );
+  hintObserver.observe(stack);
 });
 
 // header Hamburger
