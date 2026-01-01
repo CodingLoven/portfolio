@@ -3194,7 +3194,7 @@ body {
       transform 0.6s var(--ease-smooth),
       opacity 0.6s var(--ease-smooth),
       box-shadow 0.6s var(--ease-smooth);
-    pointer-events: none;
+    /* pointer-events: none; */
   }
 
  .video-card:nth-child(1) {
