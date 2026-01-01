@@ -172,8 +172,8 @@ const mobileMenu = document.querySelector('.mobile-menu');
 
 toggle.addEventListener('click', () => {
   mobileMenu.classList.toggle('active');
+  document.body.classList.toggle('no-scroll');
 });
-
 
 // header scroll float script
 
