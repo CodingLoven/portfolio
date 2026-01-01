@@ -3194,6 +3194,7 @@ body {
       transform 0.6s var(--ease-smooth),
       opacity 0.6s var(--ease-smooth),
       box-shadow 0.6s var(--ease-smooth);
+    pointer-events: none;
   }
 
  .video-card:nth-child(1) {
@@ -3291,6 +3292,11 @@ body {
   .video-card,
   .video-card * {
     touch-action: pan-y;
+  }
+
+  .video-card video,
+  .video-card iframe {
+    pointer-events: auto;
   }
 
  
