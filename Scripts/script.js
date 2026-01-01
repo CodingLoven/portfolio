@@ -134,8 +134,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /* Swipe detection (bi-directional) */
-  let startX = 0;
-  let startY = 0;
+  // let startX = 0;
+  // let startY = 0;
 
   const swipeTargets = [stack, ...cards];
 
