@@ -137,23 +137,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let startX = 0;
   let startY = 0;
 
-  stack.addEventListener("touchstart", (e) => {
-    startX = e.touches[0].clientX;
-    startY = e.touches[0].clientY;
-  }, { passive: true });
+  const swipeTargets = [stack, ...cards];
 
-  stack.addEventListener("touchend", (e) => {
-    const endX = e.changedTouches[0].clientX;
-    const endY = e.changedTouches[0].clientY;
-    const deltaX = startX - endX;
-    const deltaY = startY - endY;
+  swipeTargets.forEach(target => {
+    target.addEventListener("touchstart", (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
 
-    // Only trigger if horizontal swipe is dominant
-    if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
-      navigate(deltaX > 0 ? 1 : -1); // Swipe left = next, swipe right = previous
-    }
-  }, { passive: true });
+    target.addEventListener("touchend", (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const endY = e.changedTouches[0].clientY;
+      const deltaX = startX - endX;
+      const deltaY = startY - endY;
 
+      if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
+        navigate(deltaX > 0 ? 1 : -1);
+      }
+    }, { passive: true });
+  });
+  
   /* Initialize */
   updateStack();
 
