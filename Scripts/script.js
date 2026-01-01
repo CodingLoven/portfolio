@@ -163,9 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ✅ Tap-to-play: works with <video>. If you're using iframe embeds, tell me.
   swipeLayer.addEventListener("click", () => {
-  const video = getActiveCard()?.querySelector("video");
-  if (!video) return;
-  video.paused ? video.play() : video.pause();
+    const video = getActiveCard()?.querySelector("video");
+    if (!video) return;
+    video.paused ? video.play() : video.pause();
+  });
 });
 
 
