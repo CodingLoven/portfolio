@@ -49,10 +49,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // testimonial section js 
 
+// testimonial section js 
+
 document.addEventListener("DOMContentLoaded", () => {
-  /* ============================================
-     COUNT-UP NUMBERS ON SCROLL (UNCHANGED)
-  ============================================ */
+  /* COUNT-UP NUMBERS ON SCROLL */
+
   const statNumbers = document.querySelectorAll(".stat-number");
   let statsAnimated = false;
 
@@ -67,7 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const animate = (time) => {
       const progress = Math.min((time - startTime) / duration, 1);
       const value = target * progress;
-      el.textContent = (isDecimal ? value.toFixed(1) : Math.floor(value)) + suffix;
+
+      el.textContent =
+        (isDecimal ? value.toFixed(1) : Math.floor(value)) + suffix;
+
       if (progress < 1) requestAnimationFrame(animate);
     };
 
@@ -88,133 +92,80 @@ document.addEventListener("DOMContentLoaded", () => {
   const statsSection = document.querySelector(".about-stats");
   if (statsSection) statsObserver.observe(statsSection);
 
-  /* ============================================
-     VIDEO STACK WITH MANUAL SWIPE
-  ============================================ */
+  /* VIDEO STACK LOGIC */
+
   const stack = document.querySelector(".video-stack");
   const cards = Array.from(document.querySelectorAll(".video-card"));
   const nextBtn = document.querySelector(".video-next-btn");
 
   if (!stack || cards.length === 0) return;
 
-  const SWIPE_THRESHOLD = 50;
-
   let activeIndex = 0;
 
-  /* Update visual stack positioning */
   const updateStack = () => {
     cards.forEach((card, i) => {
       const pos = (i - activeIndex + cards.length) % cards.length;
 
       card.classList.toggle("active", pos === 0);
+
       card.style.zIndex = cards.length - pos;
-      card.style.opacity = 1;
+      card.style.opacity = pos > 2 ? 0 : 1;
 
       if (pos === 0) {
-          card.style.transform = "translate(0, 0) scale(1)";
-        } else if (pos === 1) {
-          card.style.transform = "translate(20px, -15px) scale(0.95)";
-        } else if (pos === 2) {
-          card.style.transform = "translate(40px, -30px) scale(0.90)";
-        } else {
-          card.style.transform = "translate(60px, -45px) scale(0.85)";
-        }
+        card.style.transform = "translate(0,0) scale(1)";
+      } else if (pos === 1) {
+        card.style.transform = "translate(18px,18px) scale(0.96)";
+      } else if (pos === 2) {
+        card.style.transform = "translate(36px,36px) scale(0.92)";
+      } else {
+        card.style.transform = "translate(54px,54px) scale(0.88)";
+      }
     });
   };
 
-  /* Navigate through cards */
-  const navigate = (direction) => {
-    activeIndex = (activeIndex + direction + cards.length) % cards.length;
+  const nextVideo = () => {
+    activeIndex = (activeIndex + 1) % cards.length;
     updateStack();
   };
 
-  /* Button click */
+  updateStack();
+
   if (nextBtn) {
-    nextBtn.addEventListener("click", () => navigate(1));
+    nextBtn.addEventListener("click", nextVideo);
   }
 
-  /* Swipe detection (bi-directional) */
-  // let startX = 0;
-  // let startY = 0;
+  /* MOBILE + TABLET SWIPE SUPPORT */
 
-  const swipeTargets = [stack, ...cards];
+  let startX = 0;
+  let startY = 0;
 
-  swipeTargets.forEach(target => {
-    target.addEventListener("touchstart", (e) => {
+  stack.addEventListener(
+    "touchstart",
+    (e) => {
       startX = e.touches[0].clientX;
       startY = e.touches[0].clientY;
-    }, { passive: true });
+    },
+    { passive: true }
+  );
 
-    target.addEventListener("touchend", (e) => {
+  stack.addEventListener(
+    "touchend",
+    (e) => {
       const endX = e.changedTouches[0].clientX;
       const endY = e.changedTouches[0].clientY;
+
       const deltaX = startX - endX;
       const deltaY = startY - endY;
 
-      if (Math.abs(deltaX) > SWIPE_THRESHOLD && Math.abs(deltaX) > Math.abs(deltaY)) {
-        navigate(deltaX > 0 ? 1 : -1);
-      }
-    }, { passive: true });
-  });
-  
-  /* Initialize */
-  updateStack();
-
-  /* ============================================
-     SWIPE HINT OVERLAY
-  ============================================ */
-  const showSwipeHint = () => {
-    const hint = document.createElement('div');
-    hint.className = 'swipe-hint';
-    hint.innerHTML = 'Swipe <span style="font-size: 1.3em; margin-left: 4px;">→</span>';
-    hint.style.cssText = `
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      background: rgba(0, 0, 0, 0.8);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 30px;
-      font-size: 15px;
-      font-weight: 500;
-      pointer-events: none;
-      z-index: 100;
-      animation: fadeInOut 3.5s ease-in-out;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    `;
-    
-    stack.appendChild(hint);
-    
-    setTimeout(() => hint.remove(), 3500);
-  };
-
-  // Add CSS animation
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes fadeInOut {
-      0% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-      15% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      85% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-      100% { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-    }
-  `;
-  document.head.appendChild(style);
-
-  // Show hint when section comes into view (once per page load)
-  let hintShown = false;
-  const hintObserver = new IntersectionObserver(
-    ([entry]) => {
-      if (entry.isIntersecting && !hintShown) {
-        hintShown = true;
-        setTimeout(showSwipeHint, 600);
-        hintObserver.disconnect();
+      /* horizontal swipe only */
+      if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+        nextVideo();
       }
     },
-    { threshold: 0.5 }
+    { passive: true }
   );
-  hintObserver.observe(stack);
 });
+
 
 // header Hamburger
 
