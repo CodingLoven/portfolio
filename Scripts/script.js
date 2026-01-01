@@ -167,6 +167,32 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!video) return;
     video.paused ? video.play() : video.pause();
   });
+
+  let isSwiping = false;
+
+  swipeLayer.addEventListener("touchstart", (e) => {
+    isSwiping = false;
+  }, { passive: true });
+
+  swipeLayer.addEventListener("touchmove", (e) => {
+    const touch = e.touches[0];
+    if (!touch) return;
+
+    const dx = Math.abs(touch.clientX - startX);
+    const dy = Math.abs(touch.clientY - startY);
+
+    // User intends to swipe horizontally
+    if (dx > dy && dx > 10) {
+      swipeLayer.style.pointerEvents = "auto";
+      isSwiping = true;
+      e.preventDefault();
+    }
+  }, { passive: false });
+
+  swipeLayer.addEventListener("touchend", () => {
+    swipeLayer.style.pointerEvents = "none";
+    isSwiping = false;
+  });
 });
 
 
