@@ -3289,18 +3289,13 @@ body {
     touch-action: pan-y;
   }
 
-  .video-stack {
-    touch-action: pan-y;
-  }
-
   .video-swipe-layer {
     position: absolute;
     inset: 0;
     z-index: 5;
     background: transparent;
-
-    /* This is essential */
     touch-action: pan-y;
+    pointer-events: none;
   }
 
 
@@ -3340,6 +3335,16 @@ body {
     .video-stack:hover .video-card:not(.active) {
       transform: none;
       box-shadow: none;
+    }
+
+    .video-swipe-layer {
+      position: absolute;
+      inset: 0;
+      z-index: 5;
+      background: transparent;
+
+      /* This is essential */
+      touch-action: pan-y;
     }
   }
 
