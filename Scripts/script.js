@@ -160,6 +160,108 @@ document.addEventListener("DOMContentLoaded", () => {
   /* Initialize */
   updateStack();
 
+  /*    DRAG-TO-SWIPE ON VIDEO (uses swipe layer */
+  const swipeLayer = document.querySelector(".video-swipe-layer");
+  if (swipeLayer && stack && cards.length) {
+    let startX = 0;
+    let startY = 0;
+    let dragging = false;
+
+    // Make sure the layer captures touches above videos/iframe
+    swipeLayer.style.position = "absolute";
+    swipeLayer.style.inset = "0";
+    swipeLayer.style.pointerEvents = "auto";
+    swipeLayer.style.background = "transparent"; // invisible shield
+    swipeLayer.style.zIndex = "10"; // above cards but not blocking visuals
+
+    const getActiveCard = () => cards[activeIndex];
+
+    const onTouchStart = (e) => {
+      if (!e.touches || !e.touches[0]) return;
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      dragging = true;
+
+      const active = getActiveCard();
+      if (active) {
+        active.style.transition = "none"; // follow finger smoothly
+        active.style.willChange = "transform, opacity";
+      }
+    };
+
+    const onTouchMove = (e) => {
+      if (!dragging) return;
+      // Prevent page scroll when horizontal swipe dominates
+      e.preventDefault();
+
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const dx = touch.clientX - startX;
+      const dy = touch.clientY - startY;
+
+      // Only act if horizontal movement is stronger
+      if (Math.abs(dx) > Math.abs(dy)) {
+        const active = getActiveCard();
+        if (!active) return;
+
+        // Small tilt for feedback; limit rotation
+        const tilt = Math.max(-10, Math.min(10, dx * 0.06));
+        const scale = 1 - Math.min(0.05, Math.abs(dx) / 800);
+
+        active.style.transform = `translate(${dx}px, 0) rotate(${tilt}deg) scale(${scale})`;
+        active.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 600));
+      }
+    };
+
+    const onTouchEnd = (e) => {
+      if (!dragging) return;
+      dragging = false;
+
+      const active = getActiveCard();
+      if (!active) return;
+
+      const endX = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientX : startX;
+      const endY = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0].clientY : startY;
+      const dx = endX - startX;
+      const dy = endY - startY;
+
+      const horizontal = Math.abs(dx) > Math.abs(dy);
+      const leftSwipe = dx < -SWIPE_THRESHOLD;   // move forward
+      const rightSwipe = dx > SWIPE_THRESHOLD;   // move backward
+
+      // Restore transition for snap/animate
+      active.style.transition = "transform 0.6s var(--ease-smooth), opacity 0.6s var(--ease-smooth)";
+
+      if (horizontal && (leftSwipe || rightSwipe)) {
+        // Animate card off-screen, then navigate and reset transforms
+        const offX = leftSwipe ? -stack.clientWidth - 80 : stack.clientWidth + 80;
+        active.style.transform = `translate(${offX}px, 0) rotate(${leftSwipe ? -10 : 10}deg) scale(0.92)`;
+        active.style.opacity = "0.2";
+
+        const handle = () => {
+          active.removeEventListener("transitionend", handle);
+          navigate(leftSwipe ? 1 : -1);
+          // After navigate, updateStack sets new transforms; ensure clean state
+          cards.forEach(c => {
+            c.style.transition = "";
+            c.style.opacity = "";
+          });
+        };
+        active.addEventListener("transitionend", handle);
+      } else {
+        // Snap back if swipe wasn’t strong enough
+        active.style.transform = "translate(0, 0) rotate(0deg) scale(1)";
+        active.style.opacity = "1";
+      }
+    };
+
+    swipeLayer.addEventListener("touchstart", onTouchStart, { passive: false });
+    swipeLayer.addEventListener("touchmove", onTouchMove, { passive: false });
+    swipeLayer.addEventListener("touchend", onTouchEnd, { passive: false });
+  }
+
+
   /* ============================================
      SWIPE HINT OVERLAY
   ============================================ */
