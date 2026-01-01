@@ -3238,6 +3238,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
+    z-index: 6;
   }
 
   .video-embed iframe {
@@ -3295,7 +3296,7 @@ body {
     z-index: 5;
     background: transparent;
     touch-action: pan-y;
-    /* pointer-events: none; */
+    pointer-events: none;
   }
 
 
