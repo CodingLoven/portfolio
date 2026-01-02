@@ -4396,8 +4396,8 @@ body {
   }
 
   .video-card {
-    flex: 0 0 162%;
-    max-width: 162%;
+    flex: 0 0 185%;
+    max-width: 185;
     aspect-ratio: 9 / 16;
     border-radius: var(--radius-lg);
     overflow: hidden;
@@ -4429,7 +4429,7 @@ body {
   .edge-fade {
     position: absolute;
     top: 0;
-    width: 70px;
+    width: 30px;
     height: 100%;
     z-index: 3;
     pointer-events: none;
