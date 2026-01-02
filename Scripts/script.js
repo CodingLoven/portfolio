@@ -46,158 +46,186 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 
-
 // testimonial section js 
 
-document.addEventListener("DOMContentLoaded", () => {
-  const stack = document.querySelector(".video-stack");
-  const cards = Array.from(document.querySelectorAll(".video-card"));
-  const swipeLayer = document.querySelector(".video-swipe-layer");
-  const nextBtn = document.querySelector(".video-next-btn");
-  const prevBtn = document.querySelector(".video-prev-btn");
+(() => {
+  const section = document.querySelector('#about');
+  const slider = document.querySelector('.video-slider');
+  const track = document.querySelector('.video-track');
+  const btnLeft = slider?.querySelector('.video-arrow.left');
+  const btnRight = slider?.querySelector('.video-arrow.right');
 
-  if (!stack || cards.length === 0) return;
+  if (!section || !slider || !track) return;
 
-  let activeIndex = 0;
-  const SWIPE_THRESHOLD = 60;
-  const TAP_TIME_THRESHOLD = 200; // Max time for tap (not swipe)
-  const TAP_MOVE_THRESHOLD = 10;  // Max movement for tap
+  /* =========================
+     STATE & CONSTANTS
+  ========================= */
+  let posX = 0;
+  const gap = parseFloat(getComputedStyle(track).gap) || 24;
 
-  const updateStack = () => {
-    cards.forEach((card, i) => {
-      const pos = (i - activeIndex + cards.length) % cards.length;
+  const cardWidth = () =>
+    track.children[0] ? track.children[0].offsetWidth + gap : 0;
 
-      card.classList.toggle("active", pos === 0);
-      card.style.zIndex = String(cards.length - pos);
-      card.style.opacity = "1";
+  /* =========================
+     SWIPE/DRAG STATE
+  ========================= */
+  let startX = 0;
+  let currentX = 0;
+  let isDragging = false;
+  let startPosX = 0;
 
-      if (pos === 0) card.style.transform = "translate(0,0) scale(1)";
-      else if (pos === 1) card.style.transform = "translate(20px,-15px) scale(0.95)";
-      else if (pos === 2) card.style.transform = "translate(40px,-30px) scale(0.90)";
-      else card.style.transform = "translate(60px,-45px) scale(0.85)";
+  /* =========================
+     ARROW NAVIGATION (INFINITE)
+  ========================= */
+  btnRight?.addEventListener('click', () => {
+    posX -= cardWidth();
+    track.style.transition = 'transform 0.4s ease';
+    track.style.transform = `translateX(${posX}px)`;
+
+    setTimeout(() => {
+      track.style.transition = 'none';
+      track.appendChild(track.firstElementChild);
+      posX += cardWidth();
+      track.style.transform = `translateX(${posX}px)`;
+    }, 400);
+  });
+
+  btnLeft?.addEventListener('click', () => {
+    track.insertBefore(track.lastElementChild, track.firstElementChild);
+    posX -= cardWidth();
+    track.style.transition = 'none';
+    track.style.transform = `translateX(${posX}px)`;
+
+    requestAnimationFrame(() => {
+      track.style.transition = 'transform 0.4s ease';
+      posX += cardWidth();
+      track.style.transform = `translateX(${posX}px)`;
     });
-  };
+  });
 
-  const navigate = (dir) => {
-    activeIndex = (activeIndex + dir + cards.length) % cards.length;
-    updateStack();
-  };
+  /* =========================
+     TOUCH/SWIPE SUPPORT
+  ========================= */
+  function handleDragStart(e) {
+    isDragging = true;
+    startPosX = posX;
+    startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    currentX = startX;
+    track.style.transition = 'none';
+    track.style.cursor = 'grabbing';
+  }
 
-  if (nextBtn) nextBtn.addEventListener("click", () => navigate(1));
-  if (prevBtn) prevBtn.addEventListener("click", () => navigate(-1));
+  function handleDragMove(e) {
+    if (!isDragging) return;
+    e.preventDefault();
+    
+    currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
+    const diff = currentX - startX;
+    track.style.transform = `translateX(${startPosX + diff}px)`;
+  }
 
-  updateStack();
+  function handleDragEnd() {
+    if (!isDragging) return;
+    isDragging = false;
+    track.style.cursor = 'grab';
+    
+    const diff = currentX - startX;
+    const threshold = cardWidth() * 0.3; // 30% of card width to trigger slide
 
-  if (!swipeLayer) return;
-
-  // ✅ MASTER SOLUTION: Detect tap vs swipe
-  let startX = 0, startY = 0;
-  let startTime = 0;
-  let dragging = false;
-  let locked = false;
-  let moved = false;
-
-  const getActiveCard = () => cards[activeIndex];
-
-  swipeLayer.addEventListener("touchstart", (e) => {
-    const t = e.touches[0];
-    startX = t.clientX;
-    startY = t.clientY;
-    startTime = Date.now();
-    dragging = false;
-    locked = false;
-    moved = false;
-
-    const active = getActiveCard();
-    if (active) active.style.transition = "none";
-  }, { passive: true });
-
-  swipeLayer.addEventListener("touchmove", (e) => {
-    const t = e.touches[0];
-    if (!t) return;
-
-    const dx = t.clientX - startX;
-    const dy = t.clientY - startY;
-
-    // Mark that user moved their finger
-    if (Math.abs(dx) > TAP_MOVE_THRESHOLD || Math.abs(dy) > TAP_MOVE_THRESHOLD) {
-      moved = true;
-    }
-
-    if (!locked) {
-      locked = true;
-      dragging = Math.abs(dx) > Math.abs(dy);
-    }
-
-    if (dragging) {
-      e.preventDefault();
-
-      const active = getActiveCard();
-      if (!active) return;
-
-      const tilt = Math.max(-10, Math.min(10, dx * 0.06));
-      const scale = 1 - Math.min(0.05, Math.abs(dx) / 800);
-
-      active.style.transform = `translate(${dx}px,0) rotate(${tilt}deg) scale(${scale})`;
-      active.style.opacity = String(1 - Math.min(0.35, Math.abs(dx) / 600));
-    }
-  }, { passive: false });
-
-  swipeLayer.addEventListener("touchend", (e) => {
-    const active = getActiveCard();
-    if (!active) return;
-
-    const endTime = Date.now();
-    const duration = endTime - startTime;
-
-    active.style.transition = "transform 0.6s ease, opacity 0.6s ease";
-
-    // ✅ Detect TAP: quick touch with minimal movement
-    const isTap = duration < TAP_TIME_THRESHOLD && !moved;
-
-    if (isTap) {
-      // It's a tap - trigger video play
-      const video = active.querySelector("video");
-      const iframe = active.querySelector("iframe");
-
-      if (video) {
-        if (video.paused) {
-          video.play();
-        } else {
-          video.pause();
-        }
-      } else if (iframe) {
-        // For Vimeo/YouTube iframes - simulate click on iframe
-        iframe.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+    if (Math.abs(diff) > threshold) {
+      if (diff > 0) {
+        // Swiped right (go to previous)
+        btnLeft?.click();
+      } else {
+        // Swiped left (go to next)
+        btnRight?.click();
       }
-
-      // Reset transform in case of partial drag
-      active.style.transform = "translate(0,0) scale(1)";
-      active.style.opacity = "1";
-      return;
-    }
-
-    // ✅ It's a SWIPE - handle navigation
-    if (!dragging) return;
-
-    const endX = e.changedTouches?.[0]?.clientX ?? startX;
-    const dx = endX - startX;
-
-    if (Math.abs(dx) > SWIPE_THRESHOLD) {
-      const off = dx < 0 ? -stack.clientWidth - 80 : stack.clientWidth + 80;
-      active.style.transform = `translate(${off}px,0) rotate(${dx < 0 ? -10 : 10}deg) scale(0.92)`;
-      active.style.opacity = "0.2";
-
-      active.addEventListener("transitionend", function done() {
-        active.removeEventListener("transitionend", done);
-        navigate(dx < 0 ? 1 : -1);
-      });
     } else {
-      active.style.transform = "translate(0,0) scale(1)";
-      active.style.opacity = "1";
+      // Snap back to current position
+      track.style.transition = 'transform 0.3s ease';
+      track.style.transform = `translateX(${posX}px)`;
     }
-  }, { passive: false });
-});
+  }
+
+  // Mouse events (desktop)
+  track.addEventListener('mousedown', handleDragStart);
+  document.addEventListener('mousemove', handleDragMove);
+  document.addEventListener('mouseup', handleDragEnd);
+
+  // Touch events (mobile/tablet)
+  track.addEventListener('touchstart', handleDragStart, { passive: false });
+  track.addEventListener('touchmove', handleDragMove, { passive: false });
+  track.addEventListener('touchend', handleDragEnd);
+
+  // Prevent drag on videos/iframes
+  track.querySelectorAll('video, iframe').forEach(media => {
+    media.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+    });
+    media.addEventListener('touchstart', (e) => {
+      e.stopPropagation();
+    });
+  });
+
+  // Add grab cursor
+  track.style.cursor = 'grab';
+
+})();
+
+
+
+
+/*    STATS COUNT-UP ON SCROLL */
+
+(() => {
+  const counters = document.querySelectorAll('.stat-number');
+  const statsSection = document.querySelector('.about-stats');
+
+  if (!counters.length || !statsSection) return;
+
+  const animateCounter = (el) => {
+    const target = Number(el.dataset.value);
+    let current = 0;
+    const duration = 1000;
+    const start = performance.now();
+
+    function update(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      current = Math.floor(progress * target);
+      el.textContent = current + '+';
+
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        el.textContent = target + '+';
+      }
+    }
+
+    requestAnimationFrame(update);
+  };
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        counters.forEach(animateCounter);
+        observer.disconnect();
+      }
+    });
+  }, {
+    threshold: 0.4
+  });
+
+  observer.observe(statsSection);
+})();
+
+
+
+
+
+
+
+
+
 
 
 // header Hamburger
@@ -209,6 +237,12 @@ toggle.addEventListener('click', () => {
   mobileMenu.classList.toggle('active');
   document.body.classList.toggle('no-scroll');
 });
+
+
+
+
+
+
 
 // header scroll float script
 
