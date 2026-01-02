@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!section || !slider || !track) return;
 
-  /*      STATE & CONSTANTS */
+  /* STATE & CONSTANTS */
 
   let posX = 0;
   const gap = parseFloat(getComputedStyle(track).gap) || 24;
@@ -122,7 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
       e.preventDefault();
     }
     
-    track.style.transform = `translateX(${startPosX + diff}px)`;
+    const resistance = 0.6;
+    track.style.transform = `translateX(${startPosX + diff * resistance}px)`;
+    
   }
 
   function handleDragEnd() {
@@ -151,38 +153,17 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('mouseup', handleDragEnd);
 
   // Touch events (mobile/tablet)
-  track.addEventListener('touchstart', handleDragStart, { passive: true });
+  track.addEventListener('touchstart', handleDragStart, { passive: false });
   track.addEventListener('touchmove', handleDragMove, { passive: false });
   track.addEventListener('touchend', handleDragEnd);
 
   // Prevent drag on videos/iframes
-  track.querySelectorAll('video, iframe').forEach(media => {
-    media.addEventListener('touchstart', (e) => {
-      handleDragStart(e);
-    }, { passive: true });
-    
-    media.addEventListener('touchmove', (e) => {
-      handleDragMove(e);
-    }, { passive: false });
-    
-    media.addEventListener('touchend', (e) => {
-      handleDragEnd();
-    });
 
-    media.addEventListener('click', (e) => {
-      if (hasMoved) {
-        e.preventDefault(); 
-        e.stopPropagation();
-      }
-    });
-  });
 
   // Add grab cursor
   track.style.cursor = 'grab';
 
 })();
-
-
 
 
 /*    STATS COUNT-UP ON SCROLL */
