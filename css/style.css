@@ -3901,7 +3901,7 @@ body {
     background: #fff;
     border-radius: 999px;
     backdrop-filter: blur(10px);
-    font-size: 11px;
+    font-size: 10px;
     border: var(--border-thin);
     color: var(--color-text-primary);
     z-index: 2;
