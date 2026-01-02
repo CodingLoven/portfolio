@@ -3901,7 +3901,7 @@ body {
     background: #fff;
     border-radius: 999px;
     backdrop-filter: blur(10px);
-    font-size: 10px;
+    font-size: 9px;
     border: var(--border-thin);
     color: var(--color-text-primary);
     z-index: 2;
@@ -3916,6 +3916,7 @@ body {
     display: inline-flex;
     position: relative;
     z-index: 5;
+    font-size: 11px !important;
   }
 
   .cal-btn .arrow {
