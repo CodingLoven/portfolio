@@ -57,26 +57,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (!section || !slider || !track) return;
 
-  /* =========================
-     STATE & CONSTANTS
-  ========================= */
+  /*      STATE & CONSTANTS */
+
   let posX = 0;
   const gap = parseFloat(getComputedStyle(track).gap) || 24;
 
   const cardWidth = () =>
     track.children[0] ? track.children[0].offsetWidth + gap : 0;
 
-  /* =========================
-     SWIPE/DRAG STATE
-  ========================= */
+  /*    SWIPE/DRAG STATE */
   let startX = 0;
   let currentX = 0;
   let isDragging = false;
   let startPosX = 0;
+  let hasMoved = false;
 
-  /* =========================
-     ARROW NAVIGATION (INFINITE)
-  ========================= */
+  /*   ARROW NAVIGATION (INFINITE) */
+
   btnRight?.addEventListener('click', () => {
     posX -= cardWidth();
     track.style.transition = 'transform 0.4s ease';
@@ -103,11 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* =========================
-     TOUCH/SWIPE SUPPORT
-  ========================= */
+  /*   TOUCH/SWIPE SUPPORT */
   function handleDragStart(e) {
     isDragging = true;
+    hasMoved = false;
     startPosX = posX;
     startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
     currentX = startX;
@@ -117,10 +113,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function handleDragMove(e) {
     if (!isDragging) return;
-    e.preventDefault();
     
     currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
     const diff = currentX - startX;
+    
+    if (Math.abs(diff) > 5) {
+      hasMoved = true;
+      e.preventDefault();
+    }
+    
     track.style.transform = `translateX(${startPosX + diff}px)`;
   }
 
@@ -130,18 +131,15 @@ document.addEventListener("DOMContentLoaded", () => {
     track.style.cursor = 'grab';
     
     const diff = currentX - startX;
-    const threshold = cardWidth() * 0.3; // 30% of card width to trigger slide
+    const threshold = cardWidth() * 0.3;
 
-    if (Math.abs(diff) > threshold) {
+    if (hasMoved && Math.abs(diff) > threshold) {
       if (diff > 0) {
-        // Swiped right (go to previous)
         btnLeft?.click();
       } else {
-        // Swiped left (go to next)
         btnRight?.click();
       }
     } else {
-      // Snap back to current position
       track.style.transition = 'transform 0.3s ease';
       track.style.transform = `translateX(${posX}px)`;
     }
@@ -153,17 +151,29 @@ document.addEventListener("DOMContentLoaded", () => {
   document.addEventListener('mouseup', handleDragEnd);
 
   // Touch events (mobile/tablet)
-  track.addEventListener('touchstart', handleDragStart, { passive: false });
+  track.addEventListener('touchstart', handleDragStart, { passive: true });
   track.addEventListener('touchmove', handleDragMove, { passive: false });
   track.addEventListener('touchend', handleDragEnd);
 
   // Prevent drag on videos/iframes
   track.querySelectorAll('video, iframe').forEach(media => {
-    media.addEventListener('pointerdown', (e) => {
-      e.stopPropagation();
-    });
     media.addEventListener('touchstart', (e) => {
-      e.stopPropagation();
+      handleDragStart(e);
+    }, { passive: true });
+    
+    media.addEventListener('touchmove', (e) => {
+      handleDragMove(e);
+    }, { passive: false });
+    
+    media.addEventListener('touchend', (e) => {
+      handleDragEnd();
+    });
+
+    media.addEventListener('click', (e) => {
+      if (hasMoved) {
+        e.preventDefault(); 
+        e.stopPropagation();
+      }
     });
   });
 
