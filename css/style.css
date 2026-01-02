@@ -3878,7 +3878,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 90px;
+    gap: 70px;
     width: 100%;
     font-size: clamp(3rem, 7vw, 6.5rem);
     font-style: italic;
@@ -3901,7 +3901,7 @@ body {
     background: #fff;
     border-radius: 999px;
     backdrop-filter: blur(10px);
-    font-size: 12px;
+    font-size: 11px;
     border: var(--border-thin);
     color: var(--color-text-primary);
     z-index: 2;
