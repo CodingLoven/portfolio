@@ -3893,7 +3893,7 @@ body {
     position: relative;
     top: -140px;
     left: 10px;
-    /* width: 100%; */
+    width: max-content;
     display: inline-flex;
     align-items: center;
     gap: var(--space-sm);
@@ -3901,7 +3901,7 @@ body {
     background: #fff;
     border-radius: 999px;
     backdrop-filter: blur(10px);
-    font-size: 9px;
+    font-size: 10px;
     border: var(--border-thin);
     color: var(--color-text-primary);
     z-index: 2;
