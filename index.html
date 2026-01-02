@@ -583,48 +583,67 @@
       
           <!-- RIGHT -->
           <div class="about-right">
-      
-            <div class="video-slider">
-              <button class="video-arrow left" aria-label="Previous">←</button>
-              <button class="video-arrow right" aria-label="Next">→</button>
-              <div class="video-track">
-      
-                <div class="video-card">
-                  <div class="video-embed">
-                    <iframe src="https://player.vimeo.com/video/1150209418?badge=0&autopause=0&player_id=0&app_id=58479&api=1"
-                      frameborder="0" allow="autoplay; fullscreen; picture-in-picture" title="Client Feedback">
-                    </iframe>
-                  </div>
-                </div>
-                
-                <div class="video-card">
-                  <div class="video-embed">
-                    <iframe src="https://player.vimeo.com/video/1150209418?badge=0&autopause=0&player_id=0&app_id=58479&api=1"
-                      frameborder="0" allow="autoplay; fullscreen; picture-in-picture" title="Client Feedback">
-                    </iframe>
-                  </div>
-                </div>
-      
-                <div class="video-card">
-                  <video src="assets/video-2.mp4" muted loop playsinline></video>
-                </div>
+          
+            <div class="video-slider-shell">
 
-                <div class="video-card">
-                  <div class="video-embed">
-                    <iframe src="https://player.vimeo.com/video/1150209418?badge=0&autopause=0&player_id=0&app_id=58479&api=1"
-                      frameborder="0" allow="autoplay; fullscreen; picture-in-picture" title="Client Feedback">
-                    </iframe>
+              <span class="edge-fade left"></span>
+              <span class="edge-fade right"></span>
+              
+              <button class="video-arrow left" aria-label="Previous">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                  class="arrow-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m18.75 4.5-7.5 7.5 7.5 7.5m-6-15L5.25 12l7.5 7.5" />
+                </svg>
+              </button>
+
+              <button class="video-arrow right" aria-label="Next">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                  class="arrow-icon">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="m5.25 4.5 7.5 7.5-7.5 7.5m6-15 7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+
+              <div class="video-slider" tabindex="0">
+              
+                <div class="video-track">
+              
+                  <div class="video-card">
+                    <div class="video-embed">
+                      <iframe src="https://player.vimeo.com/video/1150209418" frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture" title="Client Feedback">
+                      </iframe>
+                    </div>
                   </div>
+              
+                  <div class="video-card">
+                    <div class="video-embed">
+                      <iframe src="https://player.vimeo.com/video/1150209418" frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture">
+                      </iframe>
+                    </div>
+                  </div>
+              
+                  <div class="video-card">
+                    <video src="assets/video-2.mp4" muted loop playsinline></video>
+                  </div>
+              
+                  <div class="video-card">
+                    <div class="video-embed">
+                      <iframe src="https://player.vimeo.com/video/1150209418" frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture">
+                      </iframe>
+                    </div>
+                  </div>
+              
+                  <div class="video-card">
+                    <video src="assets/video-3.mp4" muted loop playsinline></video>
+                  </div>
+              
                 </div>
-      
-                <div class="video-card">
-                  <video src="assets/video-3.mp4" muted loop playsinline></video>
-                </div>
-      
               </div>
             </div>
-      
           </div>
+
       
         </div>
       </section>

@@ -48,122 +48,37 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // testimonial section js 
 
-(() => {
-  const section = document.querySelector('#about');
-  const slider = document.querySelector('.video-slider');
-  const track = document.querySelector('.video-track');
-  const btnLeft = slider?.querySelector('.video-arrow.left');
-  const btnRight = slider?.querySelector('.video-arrow.right');
+const videoSlider = document.querySelector('.video-slider');
+const btnLeft = document.querySelector('.video-arrow.left');
+const btnRight = document.querySelector('.video-arrow.right');
 
-  if (!section || !slider || !track) return;
+if (videoSlider && btnLeft && btnRight) {
+  const scrollAmount = () => videoSlider.clientWidth * 0.6;
 
-  /* STATE & CONSTANTS */
-
-  let posX = 0;
-  const gap = parseFloat(getComputedStyle(track).gap) || 24;
-
-  const cardWidth = () =>
-    track.children[0] ? track.children[0].offsetWidth + gap : 0;
-
-  /*    SWIPE/DRAG STATE */
-  let startX = 0;
-  let currentX = 0;
-  let isDragging = false;
-  let startPosX = 0;
-  let hasMoved = false;
-
-  /*   ARROW NAVIGATION (INFINITE) */
-
-  btnRight?.addEventListener('click', () => {
-    posX -= cardWidth();
-    track.style.transition = 'transform 0.4s ease';
-    track.style.transform = `translateX(${posX}px)`;
-
-    setTimeout(() => {
-      track.style.transition = 'none';
-      track.appendChild(track.firstElementChild);
-      posX += cardWidth();
-      track.style.transform = `translateX(${posX}px)`;
-    }, 400);
-  });
-
-  btnLeft?.addEventListener('click', () => {
-    track.insertBefore(track.lastElementChild, track.firstElementChild);
-    posX -= cardWidth();
-    track.style.transition = 'none';
-    track.style.transform = `translateX(${posX}px)`;
-
-    requestAnimationFrame(() => {
-      track.style.transition = 'transform 0.4s ease';
-      posX += cardWidth();
-      track.style.transform = `translateX(${posX}px)`;
+  btnLeft.addEventListener('click', () => {
+    videoSlider.scrollBy({
+      left: -scrollAmount(),
+      behavior: 'smooth'
     });
   });
 
-  /*   TOUCH/SWIPE SUPPORT */
-  function handleDragStart(e) {
-    isDragging = true;
-    hasMoved = false;
-    startPosX = posX;
-    startX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    currentX = startX;
-    track.style.transition = 'none';
-    track.style.cursor = 'grabbing';
-  }
+  btnRight.addEventListener('click', () => {
+    videoSlider.scrollBy({
+      left: scrollAmount(),
+      behavior: 'smooth'
+    });
+  });
+}
 
-  function handleDragMove(e) {
-    if (!isDragging) return;
-    
-    currentX = e.type.includes('mouse') ? e.clientX : e.touches[0].clientX;
-    const diff = currentX - startX;
-    
-    if (Math.abs(diff) > 5) {
-      hasMoved = true;
-      e.preventDefault();
-    }
-    
-    const resistance = 0.6;
-    track.style.transform = `translateX(${startPosX + diff * resistance}px)`;
-    
-  }
+// slider js
 
-  function handleDragEnd() {
-    if (!isDragging) return;
-    isDragging = false;
-    track.style.cursor = 'grab';
-    
-    const diff = currentX - startX;
-    const threshold = cardWidth() * 0.3;
+const slider = document.querySelector('.video-slider');
 
-    if (hasMoved && Math.abs(diff) > threshold) {
-      if (diff > 0) {
-        btnLeft?.click();
-      } else {
-        btnRight?.click();
-      }
-    } else {
-      track.style.transition = 'transform 0.3s ease';
-      track.style.transform = `translateX(${posX}px)`;
-    }
-  }
+document.querySelector('.video-arrow.left')
+  .onclick = () => slider.scrollBy({ left: -slider.clientWidth * 0.6, behavior: 'smooth' });
 
-  // Mouse events (desktop)
-  track.addEventListener('mousedown', handleDragStart);
-  document.addEventListener('mousemove', handleDragMove);
-  document.addEventListener('mouseup', handleDragEnd);
-
-  // Touch events (mobile/tablet)
-  track.addEventListener('touchstart', handleDragStart, { passive: false });
-  track.addEventListener('touchmove', handleDragMove, { passive: false });
-  track.addEventListener('touchend', handleDragEnd);
-
-  // Prevent drag on videos/iframes
-
-
-  // Add grab cursor
-  track.style.cursor = 'grab';
-
-})();
+document.querySelector('.video-arrow.right')
+  .onclick = () => slider.scrollBy({ left: slider.clientWidth * 0.6, behavior: 'smooth' });
 
 
 /*    STATS COUNT-UP ON SCROLL */
