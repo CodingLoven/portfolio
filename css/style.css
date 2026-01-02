@@ -2516,7 +2516,7 @@ body {
   }
 
   .site-header.is-hidden {
-  transform: translateY(-100%);
+    transform: translateY(-100%);
   }
 
   .header-inner {
@@ -2584,7 +2584,7 @@ body {
     display: none;
     flex-direction: column;
     gap: var(--space-lg);
-    padding: var(--space-2xl) var(--container-padding) 400px;
+    padding: var(--space-2xl) var(--container-padding) 600px;
     background: var(--color-bg-secondary);
     border-top: 1px solid var(--color-border-light);
   }
@@ -3784,7 +3784,7 @@ body {
     display: none;
     flex-direction: column;
     gap: var(--space-lg);
-    padding: var(--space-2xl) var(--container-padding) 400px;
+    padding: var(--space-2xl) var(--container-padding) 600px;
     background: var(--color-bg-secondary);
     border-top: 1px solid var(--color-border-light);
   }
